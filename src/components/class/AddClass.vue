@@ -34,7 +34,12 @@
 
 <script>
     import ListClass from "./ListClass";
+    import {mapGetters} from 'vuex';
+
     export default {
+        computed: {
+            ...mapGetters(['users', ])
+        },
         props: {
             showClassList: {
                 type: Boolean,
@@ -48,16 +53,7 @@
         },
         data() {
             return {
-                users: [
-                    {
-                        'id': 1,
-                        'full_name': 'Sina Parvizi'
-                    },
-                    {
-                        'id': 3,
-                        'full_name': 'Amir Erfan'
-                    }
-                ],
+
                 newClass: {
                     class_name: '',
                     class_teacher_id: 0
