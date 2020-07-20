@@ -2,14 +2,12 @@
 <div>
   <v-app>
 
-    <v-navigation-drawer 
-      v-model="drawer"  
+   <v-navigation-drawer
+      v-model="drawer"
+      :clipped="$vuetify.breakpoint.lgAndUp"
+      app
       right
     >
-    <v-list-item two-line class="mx-1">
-        <v-list-item-content>
-        </v-list-item-content>
-    </v-list-item>
 
     <v-list dense v-for="section in sections" :key="section.title" >
         <v-subheader> 
@@ -19,6 +17,7 @@
         <v-list-item
           v-for="item in section.items"
           :key ="item.title"
+          :to ="item.to"
           link
         >
           {{ item.title }}
@@ -26,15 +25,26 @@
 
     </v-list>
     </v-navigation-drawer>
-
-    <v-app-bar app>
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>
-          {{ title }}
-        </v-toolbar-title>
+    
+    <v-app-bar 
+      :clipped-right="$vuetify.breakpoint.lgAndUp"
+      app
+    >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>
+        {{ title }}
+      </v-toolbar-title>
         
     </v-app-bar>
 
+     <v-main>
+      <v-container class="fill-height"
+        fluid
+      >
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+  
   </v-app>
 </div>  
 </template>
@@ -44,14 +54,14 @@ export default {
   data () {
     return {
       title: 'پلتفرم آموزش آنلاین',
-      drawer: false,
+      drawer: null,
 
       sections: [
        {
          title: 'کلاس ها',
          icon: 'class',
          items: [
-           {'title': 'مشاهده کلاس ها', 'icon': 'list'},
+           {'title': 'مشاهده کلاس ها', 'icon': 'list', 'to': {name: 'Class'}},
            {'title': 'اضاف کردن کلاس', 'icon': 'create'},
          ]
        }, 
