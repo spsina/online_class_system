@@ -52,19 +52,56 @@
                     </template>
 
                     <template v-slot:item.actions="{ item }">
-                        <v-icon
-                            small
-                            class="mr-2"
-                            @click="editItem(item)"
-                        >
-                            mdi-pencil
-                        </v-icon>
-                        <v-icon
-                            small
-                            @click="deleteItem(item)"
-                        >
-                            mdi-delete
-                        </v-icon>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{on, attrs}">
+                                <span v-bind="attrs" v-on="on">
+                                    <v-icon
+                                            small
+                                            class="mr-2"
+                                            @click="goToClass(item)"
+                                            color="green"
+                                    >
+                                        open_in_browser
+                                    </v-icon>
+                                </span>
+                            </template>
+                            <span>
+                                ورود به صفحه کلاس
+                            </span>
+                        </v-tooltip>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                                <span v-bind="attrs" v-on="on">
+                                    <v-icon
+                                        small
+                                        class="mr-2"
+                                        @click="editItem(item)"
+                                        color="blue"
+                                    >
+                                        mdi-pencil
+                                    </v-icon>
+                                </span>
+                            </template>
+                            <span>ویرایش</span>
+                        </v-tooltip>
+
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{on, attrs}">
+                                <span v-bind="attrs" v-on="on" >
+                                     <v-icon
+                                             small
+                                             @click="deleteItem(item)"
+                                             color="red"
+                                     >
+                                        mdi-delete
+                                    </v-icon>
+                                </span>
+                            </template>
+                            <span>
+                                حذف
+                            </span>
+                        </v-tooltip>
+
                     </template>
                     </v-data-table>
 

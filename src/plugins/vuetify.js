@@ -5,10 +5,8 @@ Vue.use(Vuetify);
 
 export default new Vuetify({
     treeShake: true,
-    defaultAssets: {
-        font: {
-            family: 'Times New Roman'
-        },
+    rtl: true,
+    theme: {
+        dark: true,
     },
-    rtl: true
 });

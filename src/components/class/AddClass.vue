@@ -22,7 +22,10 @@
                                     :items="users" prepend-icon="mdi-account-box"/>
                             </v-col>
                         </v-row>
-                        <v-btn class="success">ثبت</v-btn>
+                        <v-btn
+                                color="blue-grey"
+                                class="ma-2 white--text"
+                        >ثبت</v-btn>
                     </v-form>
                 </v-col>
             </v-row>
