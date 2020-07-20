@@ -5,12 +5,16 @@ import ListClass from '../components/class/ListClass.vue'
 Vue.use(VueRouter)
 
   const routes = [
-  {
-    path: '/class',
-    name: 'Class',
-    component: ListClass
-
-  },
+    {
+      path: '/class/list',
+      name: 'Class-List',
+      component: ListClass
+    },
+    {
+      path: '/class/list',
+      name: 'Class-List',
+      component: ListClass
+    },
 ]
 
 const router = new VueRouter({

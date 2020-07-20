@@ -70,42 +70,24 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+import {mapActions} from 'vuex';
+
 export default {
-    data() {
+    computed: {
+        ...mapGetters(['classes', ])
+    },
+    methods: {
+        ...mapActions(['addClass', 'removeClass']),
+        deleteItem(item) {
+            if (confirm("آیا از پاک کردن این کلاس اطمینان دارید؟")) {
+                this.removeClass(item.id);
+            }
+        }
+    },
+     data() {
         return {
             rppt: "ردیف در صفحه",
-            classes: [
-                {
-                    class_name: 'برنامه نویسی وب',
-                    teacher: 'علی پرویزی',
-                    students_count: 15
-                },
-                {
-                    class_name: 'برنامه نویسی وب',
-                    teacher: 'علی پرویزی',
-                    students_count: 15
-                },
-                {
-                    class_name: 'برنامه نویسی وب',
-                    teacher: 'علی پرویزی',
-                    students_count: 15
-                },
-                {
-                    class_name: 'برنامه نویسی وب',
-                    teacher: 'علی پرویزی',
-                    students_count: 15
-                },
-                {
-                    class_name: 'برنامه نویسی وب',
-                    teacher: 'علی پرویزی',
-                    students_count: 15
-                },
-                {
-                    class_name: 'برنامه نویسی وب',
-                    teacher: 'علی پرویزی',
-                    students_count: 15
-                }
-            ],
             headers: [
                 {
                     text: 'نام کلاس',

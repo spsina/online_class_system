@@ -61,7 +61,7 @@ export default {
          title: 'کلاس ها',
          icon: 'class',
          items: [
-           {'title': 'مشاهده کلاس ها', 'icon': 'list', 'to': {name: 'Class'}},
+           {'title': 'مشاهده کلاس ها', 'icon': 'list', 'to': {name: 'Class-List'}},
            {'title': 'اضاف کردن کلاس', 'icon': 'create'},
          ]
        }, 
