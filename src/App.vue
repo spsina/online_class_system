@@ -38,7 +38,7 @@
     </v-app-bar>
 
      <v-main>
-      <v-container class="fill-height"
+      <v-container 
         fluid
       >
         <router-view></router-view>
