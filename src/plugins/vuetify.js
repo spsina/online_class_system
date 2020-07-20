@@ -4,5 +4,11 @@ import Vuetify from 'vuetify/lib';
 Vue.use(Vuetify);
 
 export default new Vuetify({
-    rtl: true,
+    treeShake: true,
+    defaultAssets: {
+        font: {
+            family: 'Times New Roman'
+        },
+    },
+    rtl: true
 });

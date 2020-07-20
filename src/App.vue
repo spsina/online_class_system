@@ -6,39 +6,24 @@
       v-model="drawer"  
       right
     >
-    <v-list >
-      <v-list-item two-line class="mx-1">
+    <v-list-item two-line class="mx-1">
         <v-list-item-content>
         </v-list-item-content>
-      </v-list-item>
-      <v-list-group v-for="section in sections" :key="section.title">
+    </v-list-item>
 
-        <template v-slot:activator>
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon>{{ section.icon }}</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>
-                {{ section.title }}
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </template>
+    <v-list dense v-for="section in sections" :key="section.title" >
+        <v-subheader> 
+          <v-icon small class="mx-1">{{ section.icon }}</v-icon> {{ section.title }}
+          </v-subheader>
 
         <v-list-item
           v-for="item in section.items"
           :key ="item.title"
           link
         >
-        
-        <v-list-item-icon>
-          <v-icon>mdi-{{home}}</v-icon>
-        </v-list-item-icon>
-
           {{ item.title }}
         </v-list-item>
-      </v-list-group>
+
     </v-list>
     </v-navigation-drawer>
 
@@ -66,8 +51,8 @@ export default {
          title: 'کلاس ها',
          icon: 'class',
          items: [
-           {'title': 'مشاهده کلاس ها'},
-           {'title': 'اضاف کردن کلاس'},
+           {'title': 'مشاهده کلاس ها', 'icon': 'list'},
+           {'title': 'اضاف کردن کلاس', 'icon': 'create'},
          ]
        }, 
        {
