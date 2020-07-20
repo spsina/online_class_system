@@ -30,12 +30,14 @@
                     </v-card-title>
                     
                     <v-data-table
+                        :header-props="{
+                            'sort-by-text':'مرتب سازی بر اساس',
+                        }"
                         :headers="headers"
                         :items="classes"
                         :search="search"
                         :loading="loading"
                         :footer-props="{
-                            'pageText': 'sadf',
                             showFirstLastPage: true,
                             'items-per-page-text':'کلاس در صفحه',
                         }"
