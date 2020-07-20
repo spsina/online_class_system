@@ -24,6 +24,42 @@
         </v-list-item>
 
     </v-list>
+
+       <template v-slot:append>
+           <v-container>
+               <v-row justify="space-between">
+                   <v-col cols="3">
+                       <v-tooltip top>
+                           <template v-slot:activator="{on, attrs}">
+                       <span v-bind="attrs" v-on="on">
+                           <v-btn icon><v-icon>mdi-logout</v-icon></v-btn>
+                       </span>
+                           </template>
+                           <span>
+                    خروج
+                   </span>
+                       </v-tooltip>
+                   </v-col>
+                   <v-col cols="3">
+                       <v-tooltip top>
+                           <template v-slot:activator="{on, attrs}">
+                       <span v-bind="attrs" v-on="on">
+                           <v-btn icon
+
+                                  @click="$vuetify.theme.dark=!$vuetify.theme.dark"
+                           ><v-icon v-if="$vuetify.theme.dark">brightness_high</v-icon>
+                           <v-icon v-else>brightness_low</v-icon>
+                           </v-btn>
+                       </span>
+                           </template>
+                           <span>
+                       تغییر روشنایی
+                   </span>
+                       </v-tooltip>
+                   </v-col>
+               </v-row>
+           </v-container>
+       </template>
     </v-navigation-drawer>
     
     <v-app-bar 
