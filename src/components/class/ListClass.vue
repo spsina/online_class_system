@@ -1,15 +1,18 @@
 <template>
     <div >
         <v-row>
-            
             <v-spacer></v-spacer>
             <v-col 
                 cols="6"
                 md="3"
                 style="text-align: center"
                 >
-                <v-btn class="ma-auto success ">
-                    <v-icon small left>add</v-icon>
+                <v-btn
+                        v-if="showAddClassBtn"
+                        class="ma-auto success "
+                        :to="{ name: 'Class-Add' } "
+                >
+                    <v-icon small left @click="alert('hi')">add</v-icon>
                     اضاف کردن کلاس جدید
                 </v-btn>
             </v-col>
@@ -76,6 +79,12 @@ import {mapGetters} from "vuex";
 import {mapActions} from 'vuex';
 
 export default {
+    props: {
+        showAddClassBtn: {
+            type: Boolean,
+            default: true
+        }
+    },
     computed: {
         ...mapGetters(['classes', ])
     },
