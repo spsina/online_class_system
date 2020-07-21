@@ -12,7 +12,7 @@ const getters = {
 
 const mutations = {
     appendClass(state, _class) {
-        state.classes.push(_class);
+        state.classes.unshift(_class);
     },
     setClasses(state, _classes) {
         state.classes = _classes;
