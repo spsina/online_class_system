@@ -1,4 +1,6 @@
 import AccountServices from '../../services/account.service'
+import Axios from "axios";
+import store from "../index";
 
 export default {
     state: {
@@ -8,6 +10,7 @@ export default {
         user: {}
     },
     mutations: {
+
         authRequested: state => state.status = 'loggingIn',
         loggedIn(state, token) {
             state.status = 'loggedIn';
@@ -21,6 +24,7 @@ export default {
         networkError: state => state.status = 'networkError'
     },
     getters: {
+        authToken: state => state.token,
         isLoggedIn: state => !!state.token,
         authStatus: state => state.status
     },
@@ -29,10 +33,9 @@ export default {
             return new Promise( (resolve, reject) => {
                 commit('authRequested');
                 AccountServices.login(username, password).then( (response) => {
-                    console.log(response.token);
                     localStorage.setItem('token', response.token);
                     commit('loggedIn', response.token);
-                    console.log(("LOGGED IN"))
+                    Axios.defaults.headers.common['Authorization'] = 'token ' + store.getters.authToken;
                     resolve()
                 } ).catch( ({status}) => {
                     if (status === 400)

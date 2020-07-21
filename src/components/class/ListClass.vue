@@ -39,7 +39,7 @@
                         :headers="headers"
                         :items="classes"
                         :search="search"
-                        :loading="loading"
+                        :loading="!classesSet"
                         :footer-props="{
                             showFirstLastPage: true,
                             'items-per-page-text':'کلاس در صفحه',
@@ -50,7 +50,9 @@
                     <template v-slot:footer.page-text="items"> 
                         {{ items.pageStart }} - {{ items.pageStop }} از {{ items.itemsLength }} 
                     </template>
-
+                        <template v-slot:item.teacher=" {item} ">
+                            {{ item.teacher.user.first_name }} {{ item.teacher.user.last_name }}
+                        </template>
                     <template v-slot:item.actions="{ item }">
                         <v-tooltip bottom>
                             <template v-slot:activator="{on, attrs}">
@@ -123,7 +125,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['classes', ])
+        ...mapGetters(['classes', 'classesSet'])
     },
     methods: {
         ...mapActions(['addClass', 'removeClass', 'fetchAllClasses']),
@@ -147,7 +149,7 @@ export default {
                     text: 'مدرس',
                     align: 'start',
                     sortable: true,
-                    value: 'teacher.first_name' + ' ' + 'teacher.lsat_name',
+                    value: 'teacher'
                 },
                 {
                     text: 'تعداد دانشجو',
@@ -163,7 +165,6 @@ export default {
                 },
             ],
             search: '',
-            loading: false
         }
     },
     mounted() {

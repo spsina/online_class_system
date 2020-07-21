@@ -7,7 +7,14 @@ import store from './store'
 import '@/styles/_fonts.scss'
 import Axios from 'axios'
 
+
+// setup axios common defaults
 Axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
+
+// set auth header if logged in
+if (store.getters.isLoggedIn){
+  Axios.defaults.headers.common['Authorization'] = 'token ' + store.getters.authToken;
+}
 
 Vue.config.productionTip = false
 

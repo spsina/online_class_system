@@ -1,24 +1,15 @@
 import axios from 'axios'
 
 export default {
-    login,
-    logout
+    fetchAllClasses
 };
 
-function login(username, password) {
-
-    return axios.post('/api-token-auth/', {
-        username,
-        password
-    }).then(response => {
-        console.log(response);
-        localStorage.setItem('auth-token', JSON.stringify(response).token);
-
-    }).catch( reason =>
-        console.log(reason)
-    )
-}
-
-function logout() {
-    localStorage.removeItem('auth-token');
+function fetchAllClasses () {
+    return new Promise( (resolve, reject)=>{
+        axios({
+            method: 'GET',
+            url: 'class/list/',
+            data: {},
+        }).then(({data}) => resolve(data)).catch(err => reject(err))
+    } );
 }

@@ -1,6 +1,4 @@
-import axios from "axios";
-import Config from '../../services/config'
-const root = Config.root;
+import ClassServices from '../../services/class.service'
 
 const state = {
     isSet: false,
@@ -18,13 +16,11 @@ const mutations = {
     },
     setClasses(state, _classes) {
         state.classes = _classes;
+        state.isSet = true;
     },
     removeClass(state, _classId){
         state.classes = state.classes.filter((_cls) => { return _cls.id !== _classId; });
     },
-    setClassesSet(state) {
-        state.isSet = true;
-    }
 };
 const actions = {
     addClass(context, _class){
@@ -37,13 +33,10 @@ const actions = {
         context.commit('removeClass', _classId);
     },
 
-    fetchAllClasses(context) {
-        axios
-            .get(root + 'class/list/')
-            .then(response => {
-                console.log(response);
-                context.commit('setClasses', []);
-            }).catch(reason => (console.log(reason)));
+    fetchAllClasses({commit}) {
+        ClassServices.fetchAllClasses().then( (_classes) =>
+            commit('setClasses', _classes)
+        )
     }
 };
 
