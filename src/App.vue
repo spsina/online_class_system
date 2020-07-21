@@ -45,7 +45,7 @@
                           <v-tooltip top>
                               <template v-slot:activator="{on, attrs}">
                                    <span v-bind="attrs" v-on="on">
-                                       <v-btn icon @click="$vuetify.theme.dark=!$vuetify.theme.dark"
+                                       <v-btn icon @click="toggleDarkMode"
                                        ><v-icon v-if="$vuetify.theme.dark">brightness_high</v-icon>
                                        <v-icon v-else>brightness_medium</v-icon>
                                        </v-btn>
@@ -96,7 +96,7 @@
 
 <script>
 export default {
-  data () {
+    data () {
     return {
       title: 'پلتفرم آموزش آنلاین',
       drawer: null,
@@ -129,6 +129,19 @@ export default {
       ]
 
     }
-  }
+  },
+    methods:{
+        toggleDarkMode() {
+            this.$vuetify.theme.dark=!this.$vuetify.theme.dark;
+            console.log("before set ", this.$vuetify.theme.dark);
+            localStorage.setItem('darkMode', this.$vuetify.theme.dark)
+            console.log("after set ",  localStorage.getItem('darkMode'));
+
+        }
+    },
+    mounted() {
+        let darkMode = localStorage.getItem('darkMode');
+        this.$vuetify.theme.dark = darkMode === 'true';
+    }
 }
 </script>

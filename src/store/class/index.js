@@ -1,45 +1,13 @@
-const state = {
-    classes: [
-        {
-            class_name: 'برنامه نویسی وب',
-            teacher: 'علی پرویزی',
-            students_count: 15,
-            id: 1
-        },
-        {
-            class_name: 'برنامه نویسی وب',
-            teacher: 'علی پرویزی',
-            students_count: 15,
-            id: 2
-        },
-        {
-            class_name: 'برنامه نویسی وب',
-            teacher: 'علی پرویزی',
-            students_count: 15,
-            id: 3
+import axios from "axios";
+import Config from '../../services/config'
+const root = Config.root;
 
-        },
-        {
-            class_name: 'برنامه نویسی وب',
-            teacher: 'علی پرویزی',
-            students_count: 15,
-            id: 4
-        },
-        {
-            class_name: 'برنامه نویسی وب',
-            teacher: 'علی پرویزی',
-            students_count: 15,
-            id: 5
-        },
-        {
-            class_name: 'برنامه نویسی وب',
-            teacher: 'علی پرویزی',
-            students_count: 15,
-            id: 6
-        }
-    ],
+const state = {
+    isSet: false,
+    classes: [],
 };
 const getters = {
+    classesSet(state) {return state.isSet},
     classes(state) { return state.classes; },
     getById(state, _id) { return state.classes.find((_cls) => {return _cls.id === _id;}) }
 };
@@ -53,6 +21,9 @@ const mutations = {
     },
     removeClass(state, _classId){
         state.classes = state.classes.filter((_cls) => { return _cls.id !== _classId; });
+    },
+    setClassesSet(state) {
+        state.isSet = true;
     }
 };
 const actions = {
@@ -64,6 +35,15 @@ const actions = {
     },
     removeClass(context, _classId){
         context.commit('removeClass', _classId);
+    },
+
+    fetchAllClasses(context) {
+        axios
+            .get(root + 'class/list/')
+            .then(response => {
+                console.log(response);
+                context.commit('setClasses', []);
+            }).catch(reason => (console.log(reason)));
     }
 };
 

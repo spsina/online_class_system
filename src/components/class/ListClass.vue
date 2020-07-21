@@ -126,7 +126,7 @@ export default {
         ...mapGetters(['classes', ])
     },
     methods: {
-        ...mapActions(['addClass', 'removeClass']),
+        ...mapActions(['addClass', 'removeClass', 'fetchAllClasses']),
         deleteItem(item) {
             if (confirm("آیا از پاک کردن این کلاس اطمینان دارید؟")) {
                 this.removeClass(item.id);
@@ -147,7 +147,7 @@ export default {
                     text: 'مدرس',
                     align: 'start',
                     sortable: true,
-                    value: 'teacher',
+                    value: 'teacher.first_name' + ' ' + 'teacher.lsat_name',
                 },
                 {
                     text: 'تعداد دانشجو',
@@ -167,6 +167,7 @@ export default {
         }
     },
     mounted() {
+        this.fetchAllClasses();
     }
 }
 </script>
