@@ -133,7 +133,11 @@ export default {
         ...mapActions(['addClass', 'removeClass', 'fetchAllClasses']),
         deleteItem(item) {
             if (confirm("آیا از پاک کردن این کلاس اطمینان دارید؟")) {
-                this.removeClass(item.id);
+                this.removeClass(item.id).then(() => {
+                    this.$toasted.success('کلاس پاک شد');
+                }).catch(() => {
+                    this.$toasted.error('کلاس پاک نشد');
+                });
             }
         }
     },

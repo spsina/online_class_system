@@ -6,10 +6,12 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import store from './store'
 import '@/styles/_fonts.scss'
 import Axios from 'axios'
-import toasted from 'vue-toasted';
+import Toasted from 'vue-toasted';
 
-Vue.use(toasted)
-
+Vue.use(Toasted, {
+  duration: 2000,
+  position: 'top-right',
+})
 // setup axios common defaults
 Axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
 
@@ -61,5 +63,6 @@ new Vue({
   vuetify,
   router,
   store,
+  Toasted,
   render: h => h(App)
 }).$mount('#app')

@@ -30,7 +30,15 @@ const actions = {
         context.commit('addClass', _class);
     },
     removeClass(context, _classId){
-        context.commit('removeClass', _classId);
+        return new Promise( (resolve, reject) => {
+            ClassServices.deleteClass(_classId).then( () => {
+                    context.commit('removeClass', _classId);
+                    resolve();
+                }
+            ).catch( () => {
+                reject();
+            });
+        } );
     },
 
     fetchAllClasses({commit}) {
@@ -41,7 +49,7 @@ const actions = {
             }
         }
         )
-    }
+    },
 };
 
 
