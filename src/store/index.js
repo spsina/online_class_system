@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import ClassStore from './class/index'
-import UserStore from './users/index'
+import ClassStore from './moduls/class.store'
+import UserStore from './moduls/users.store'
+import AccountStore from './moduls/account.store'
 
 Vue.use(Vuex)
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
   },
   modules: {
     ClassStore,
-    UserStore
+    UserStore,
+    AccountStore
   }
 })

@@ -1,4 +1,3 @@
-import Config from './config'
 import axios from 'axios'
 
 export default {
@@ -8,7 +7,7 @@ export default {
 
 function login(username, password) {
 
-    return axios.post(`${Config.API_ROOT}/api-token-auth/`, {
+    return axios.post('/api-token-auth/', {
         username,
         password
     }).then(response => {
