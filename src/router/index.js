@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import ListClass from '../components/class/ListClass.vue'
-import App from '../App'
 import AddClass from "../components/class/AddClass";
+import HomePage from "../components/home/HomePage";
 
 Vue.use(VueRouter)
 
@@ -10,7 +10,7 @@ Vue.use(VueRouter)
     {
       path: '/',
       name: 'Home',
-      component: App
+      component: HomePage
     },
     {
       path: '/class/add',

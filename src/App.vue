@@ -1,66 +1,78 @@
 <template>
-<div>
   <v-app>
 
-   <v-navigation-drawer
-      v-model="drawer"
-      :clipped="$vuetify.breakpoint.lgAndUp"
-      app
-      right
-    >
+      <v-navigation-drawer
+              v-model="drawer"
+              :clipped="$vuetify.breakpoint.lgAndUp"
+              app
+              right
+      >
 
-    <v-list dense v-for="section in sections" :key="section.title" >
-        <v-subheader> 
-          <v-icon small class="mx-1">{{ section.icon }}</v-icon> {{ section.title }}
-          </v-subheader>
+          <v-list dense v-for="section in sections" :key="section.title" >
+              <v-subheader>
+                  <v-icon small class="mx-1">{{ section.icon }}</v-icon> {{ section.title }}
+              </v-subheader>
 
-        <v-list-item
-          v-for="item in section.items"
-          :key ="item.title"
-          :to ="item.to"
-          link
-        >
-          {{ item.title }}
-        </v-list-item>
+              <v-list-item
+                      v-for="item in section.items"
+                      :key ="item.title"
+                      :to ="item.to"
+                      link
+              >
+                  {{ item.title }}
+              </v-list-item>
 
-    </v-list>
+          </v-list>
 
-       <template v-slot:append>
-           <v-container>
-               <v-row justify="space-between">
-                   <v-col cols="3">
-                       <v-tooltip top>
-                           <template v-slot:activator="{on, attrs}">
-                       <span v-bind="attrs" v-on="on">
-                           <v-btn icon><v-icon>mdi-logout</v-icon></v-btn>
-                       </span>
-                           </template>
-                           <span>
-                    خروج
-                   </span>
-                       </v-tooltip>
-                   </v-col>
-                   <v-col cols="3">
-                       <v-tooltip top>
-                           <template v-slot:activator="{on, attrs}">
-                       <span v-bind="attrs" v-on="on">
-                           <v-btn icon
+          <template v-slot:append>
+              <v-container>
+                  <v-row justify="space-between">
+                      <v-col cols="3">
+                          <v-tooltip top>
+                              <template v-slot:activator="{on, attrs}">
+                                   <span v-bind="attrs" v-on="on">
+                                       <v-btn icon :to="{ name: 'Home'}">
+                                       <v-icon>mdi-home</v-icon>
+                                       </v-btn>
+                                   </span>
+                              </template>
+                              <span>
+                                    خانه
+                              </span>
+                          </v-tooltip>
+                      </v-col>
+                      <v-col cols="3">
+                          <v-tooltip top>
+                              <template v-slot:activator="{on, attrs}">
+                                   <span v-bind="attrs" v-on="on">
+                                       <v-btn icon @click="$vuetify.theme.dark=!$vuetify.theme.dark"
+                                       ><v-icon v-if="$vuetify.theme.dark">brightness_high</v-icon>
+                                       <v-icon v-else>brightness_medium</v-icon>
+                                       </v-btn>
+                                   </span>
+                              </template>
+                              <span>
+                                    تغییر روشنایی
+                              </span>
+                          </v-tooltip>
+                      </v-col>
+                      <v-col cols="3">
+                          <v-tooltip top>
+                              <template v-slot:activator="{on, attrs}">
+                                   <span v-bind="attrs" v-on="on">
+                                       <v-btn icon><v-icon>mdi-logout</v-icon></v-btn>
+                                   </span>
+                              </template>
+                              <span>
+                                خروج
+                               </span>
+                          </v-tooltip>
+                      </v-col>
 
-                                  @click="$vuetify.theme.dark=!$vuetify.theme.dark"
-                           ><v-icon v-if="$vuetify.theme.dark">brightness_high</v-icon>
-                           <v-icon v-else>brightness_low</v-icon>
-                           </v-btn>
-                       </span>
-                           </template>
-                           <span>
-                       تغییر روشنایی
-                   </span>
-                       </v-tooltip>
-                   </v-col>
-               </v-row>
-           </v-container>
-       </template>
-    </v-navigation-drawer>
+                  </v-row>
+              </v-container>
+          </template>
+      </v-navigation-drawer>
     
     <v-app-bar 
       :clipped-right="$vuetify.breakpoint.lgAndUp"
@@ -73,16 +85,13 @@
         
     </v-app-bar>
 
-     <v-main>
-      <v-container 
-        fluid
-      >
-        <router-view></router-view>
-      </v-container>
-    </v-main>
-  
+      <v-main>
+          <v-container fluid>
+              <router-view></router-view>
+          </v-container>
+      </v-main>
+
   </v-app>
-</div>  
 </template>
 
 <script>
