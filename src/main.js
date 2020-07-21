@@ -6,7 +6,9 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import store from './store'
 import '@/styles/_fonts.scss'
 import Axios from 'axios'
+import toasted from 'vue-toasted';
 
+Vue.use(toasted)
 
 // setup axios common defaults
 Axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
@@ -15,6 +17,20 @@ Axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
 if (store.getters.isLoggedIn){
   Axios.defaults.headers.common['Authorization'] = 'token ' + store.getters.authToken;
 }
+
+// setup global error handler
+// Axios.interceptors.response.use(
+//     function(response) {
+//       return response;
+//     },
+//     function(error) {
+//       if (error.response && error.response.status === 401) {
+//         Vue.toasted.error("دسترسی غیرمجاز");
+//       } else if (error.response && error.response.status === 400){
+//         Vue.toasted.error("ورودی های خود را کنترل کنید");
+//       }
+//     }
+// );
 
 Vue.config.productionTip = false
 

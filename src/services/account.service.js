@@ -3,16 +3,15 @@ import axios from 'axios'
 export default {
     login(username, password) {
         return new Promise( (resolve, reject) => {
-            axios( {
-                method: 'POST',
-                url:'api-token-auth/',
-                data: {
+            axios.post('api-token-auth/',
+                {
                     username,
-                    password },
-                }
-            ).then( (response)  => {
+                    password
+                }).then( (response)  => {
                 resolve(response);
-            }).catch(err => reject(err))
+            }).catch( (err) => {
+                reject(err);
+            })
         } );
     },
     logout() {}

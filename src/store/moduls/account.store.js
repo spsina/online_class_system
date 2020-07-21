@@ -38,15 +38,18 @@ export default {
                     Axios.defaults.headers.common['Authorization'] = 'token ' + store.getters.authToken;
                     resolve()
                 } ).catch( (err) => {
-                    if (err.response && err.response.status === 400)
+
+                    if (err && err.status === 400)
                         commit('logInFailed');
                     else
                         commit('networkError');
+
                     reject()
                 })
             } );
         },
         logout({commit}) {
+            localStorage.removeItem('token');
             commit('logOut');
         }
     }
