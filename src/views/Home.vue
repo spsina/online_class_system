@@ -82,6 +82,15 @@
       <v-toolbar-title>
         {{ title }}
       </v-toolbar-title>
+        <v-divider
+                class="mx-10"
+                :dark="$vuetify.theme.dark"
+                :light="!$vuetify.theme.dark"
+                :inset="true"
+                :vertical="true"
+        ></v-divider>
+        {{ $store.getters.user.user.first_name }}
+        {{ $store.getters.user.user.last_name }}
 
     </v-app-bar>
 

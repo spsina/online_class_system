@@ -7,14 +7,15 @@ export default {
         // loggedIn, loggingIn, error, networkError
         status: '',
         token: localStorage.getItem('token') || '',
-        user: {}
+        user: JSON.parse(localStorage.getItem('user'))
+
     },
     mutations: {
-
         authRequested: state => state.status = 'loggingIn',
-        loggedIn(state, token) {
+        loggedIn(state, info) {
             state.status = 'loggedIn';
-            state.token = token;
+            state.token = info.token;
+            state.user = info
         },
         logOut: state => {
             state.status = '';
@@ -24,6 +25,7 @@ export default {
         networkError: state => state.status = 'networkError'
     },
     getters: {
+        user: state => state.user,
         authToken: state => state.token,
         isLoggedIn: state => !!state.token,
         authStatus: state => state.status
@@ -34,7 +36,8 @@ export default {
                 commit('authRequested');
                 AccountServices.login(username, password).then( (response) => {
                     localStorage.setItem('token', response.data.token);
-                    commit('loggedIn', response.data.token);
+                    localStorage.setItem('user', JSON.stringify(response.data));
+                    commit('loggedIn', response.data);
                     Axios.defaults.headers.common['Authorization'] = 'token ' + store.getters.authToken;
                     resolve()
                 } ).catch( (err) => {

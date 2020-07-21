@@ -71,24 +71,25 @@
                                 ورود به صفحه کلاس
                             </span>
                         </v-tooltip>
-                        <v-tooltip bottom>
-                            <template v-slot:activator="{ on, attrs }">
+                        <template>
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on, attrs }">
                                 <span v-bind="attrs" v-on="on">
                                     <v-icon
-                                        small
-                                        class="mr-2"
-                                        @click="editItem(item)"
-                                        color="blue"
+                                            small
+                                            class="mr-2"
+                                            @click="editItem(item)"
+                                            color="blue"
                                     >
                                         mdi-pencil
                                     </v-icon>
                                 </span>
-                            </template>
-                            <span>ویرایش</span>
-                        </v-tooltip>
+                                </template>
+                                <span>ویرایش</span>
+                            </v-tooltip>
 
-                        <v-tooltip bottom>
-                            <template v-slot:activator="{on, attrs}">
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{on, attrs}">
                                 <span v-bind="attrs" v-on="on" >
                                      <v-icon
                                              small
@@ -98,12 +99,13 @@
                                         mdi-delete
                                     </v-icon>
                                 </span>
-                            </template>
-                            <span>
+                                </template>
+                                <span>
                                 حذف
                             </span>
-                        </v-tooltip>
+                            </v-tooltip>
 
+                        </template>
                     </template>
                     </v-data-table>
 
