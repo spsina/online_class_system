@@ -2,7 +2,8 @@ import axios from 'axios'
 
 export default {
     fetchAllClasses,
-    deleteClass
+    deleteClass,
+    createClass
 };
 
 function fetchAllClasses () {
@@ -21,6 +22,16 @@ function deleteClass (classID) {
             method: 'DELETE',
             url: `class/${classID}/update/`,
             data: {},
+        }).then((response) => resolve(response)).catch(err => reject(err))
+    } );
+}
+
+function createClass (classData) {
+    return new Promise( (resolve, reject)=>{
+        axios({
+            method: 'POST',
+            url: `class/create/`,
+            data: classData,
         }).then((response) => resolve(response)).catch(err => reject(err))
     } );
 }

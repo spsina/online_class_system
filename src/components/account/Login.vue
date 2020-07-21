@@ -40,7 +40,7 @@
                                     flat
                             >
                                 <v-toolbar-title>
-                                    ورورد به سیستم
+                                    ورود به سیستم
                                 </v-toolbar-title>
                                 <v-spacer></v-spacer>
                             </v-toolbar>
@@ -73,7 +73,7 @@
                                     form="login-form"
                                     :disabled="authStatus === 'loggingIn'"
                                     :loading="authStatus === 'loggingIn'">
-                                    <span>ورورد</span>
+                                    <span>ورود</span>
                                 </v-btn>
                             </v-card-actions>
                         </v-card>

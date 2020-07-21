@@ -11,7 +11,7 @@ const getters = {
 };
 
 const mutations = {
-    addClass(state, _class) {
+    appendClass(state, _class) {
         state.classes.push(_class);
     },
     setClasses(state, _classes) {
@@ -24,10 +24,15 @@ const mutations = {
 };
 const actions = {
     addClass(context, _class){
-        // send server request
-
-        // also add to internal classes array
-        context.commit('addClass', _class);
+        return new Promise( (resolve, reject) => {
+            // send server request
+            ClassServices.createClass(_class).then(
+                (response) => {
+                    context.commit('appendClass', response.data);
+                    resolve()
+                }
+            ).catch((err) => reject(err))
+        }  );
     },
     removeClass(context, _classId){
         return new Promise( (resolve, reject) => {
