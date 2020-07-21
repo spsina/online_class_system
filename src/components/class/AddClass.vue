@@ -10,7 +10,8 @@
             </v-row>
             <v-row>
                 <v-col cols="12" >
-                    <v-form class="mx-10" @submit.prevent.stop="addNewClass" id="add-new-class-form">
+                    <v-form       ref="form"
+                                  class="mx-10" @submit.prevent.stop="addNewClass" id="add-new-class-form">
                         <v-row>
                             <v-col cols="12" md="6">
                                 <v-text-field
@@ -44,8 +45,12 @@
 <script>
     import ListClass from "./ListClass";
     import {mapGetters} from 'vuex';
+    import FormValidationMixin from "../mixins/FormValidationMixin";
 
     export default {
+        mixins: [
+            FormValidationMixin
+        ],
         computed: {
             ...mapGetters(['users', ]),
         },
@@ -56,35 +61,21 @@
             }
         },
         methods: {
-            clearRawForm(rawFormData) {
-                let _class = {}
-                for (let key in rawFormData){
-                    _class[key] = rawFormData[key].value
-                }
 
-                return _class;
+            clearForm(){
+                this.$refs.form.reset();
+                this.newClass.teacher_username.value = this.$store.getters.user.user.username;
             },
-            clearFormErrors(rawFormData){
-                for (let key in rawFormData){
-                    rawFormData[key].errors = []
-                }
-            },
+
             addNewClass() {
                 this.clearFormErrors(this.newClass);
                 this.$store.dispatch('addClass', this.clearRawForm(this.newClass) ).
-                then(() => this.$toasted.success('کلاس جدید اضافه شد'))
+                then(() => {
+                    this.$toasted.success('کلاس جدید اضافه شد');
+                    this.clearForm();
+                })
                 .catch((err) => {
-                    if (err && err.response && err.response.data) {
-                        for (let key in err.response.data) {
-                            if (key === 'non_field_errors') {
-                                for (let _err in err.response.data[key])
-                                    this.$toasted.error(err.response.data[key][_err])
-                            }
-                            for (let _err in err.response.data[key]) {
-                                this.newClass[key].errors.push(err.response.data[key][_err])
-                            }
-                        }
-                    }
+                    this.setErrors(this.newClass, err);
                 })
             }
         },
