@@ -71,7 +71,7 @@
                                 ورود به صفحه کلاس
                             </span>
                         </v-tooltip>
-                        <template>
+                        <template v-if="item.teacher.id === $store.getters.user.id || $store.getters.user.user.is_superuser">
                             <v-tooltip bottom>
                                 <template v-slot:activator="{ on, attrs }">
                                 <span v-bind="attrs" v-on="on">
