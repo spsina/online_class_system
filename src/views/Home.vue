@@ -46,8 +46,8 @@
                 <template v-slot:activator="{on, attrs}">
                                    <span v-bind="attrs" v-on="on">
                                        <v-btn icon @click="toggleDarkMode"
-                                       ><v-icon v-if="$vuetify.theme.dark">brightness_high</v-icon>
-                                       <v-icon v-else>brightness_medium</v-icon>
+                                       ><v-icon v-if="$vuetify.theme.dark">brightness_low</v-icon>
+                                       <v-icon v-else>brightness_high</v-icon>
                                        </v-btn>
                                    </span>
                 </template>
