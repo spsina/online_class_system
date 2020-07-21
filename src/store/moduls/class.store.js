@@ -34,8 +34,12 @@ const actions = {
     },
 
     fetchAllClasses({commit}) {
-        ClassServices.fetchAllClasses().then( (_classes) =>
-            commit('setClasses', _classes)
+        ClassServices.fetchAllClasses().then( (response) => {
+            if (response.status === 200) {
+                let _classes = response.data;
+                commit('setClasses', _classes);
+            }
+        }
         )
     }
 };

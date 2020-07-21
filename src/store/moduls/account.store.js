@@ -33,12 +33,12 @@ export default {
             return new Promise( (resolve, reject) => {
                 commit('authRequested');
                 AccountServices.login(username, password).then( (response) => {
-                    localStorage.setItem('token', response.token);
-                    commit('loggedIn', response.token);
+                    localStorage.setItem('token', response.data.token);
+                    commit('loggedIn', response.data.token);
                     Axios.defaults.headers.common['Authorization'] = 'token ' + store.getters.authToken;
                     resolve()
-                } ).catch( ({status}) => {
-                    if (status === 400)
+                } ).catch( (err) => {
+                    if (err.response && err.response.status === 400)
                         commit('logInFailed');
                     else
                         commit('networkError');

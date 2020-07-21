@@ -9,14 +9,10 @@ export default {
                 data: {
                     username,
                     password },
-                validateStatus: () => true
                 }
-            ).then( ({data, status} ) => {
-                if (status === 200)
-                    resolve(data);
-                else
-                    reject({data, status})
-            }).catch(err => reject({data:err, status: 500}))
+            ).then( (response)  => {
+                resolve(response);
+            }).catch(err => reject(err))
         } );
     },
     logout() {}

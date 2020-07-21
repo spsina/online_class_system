@@ -10,6 +10,6 @@ function fetchAllClasses () {
             method: 'GET',
             url: 'class/list/',
             data: {},
-        }).then(({data}) => resolve(data)).catch(err => reject(err))
+        }).then((response) => resolve(response)).catch(err => reject(err))
     } );
 }
