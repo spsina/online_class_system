@@ -31,11 +31,6 @@
 
         <v-container>
             <v-row>
-                <v-col cols="12" class="heading">
-                    <h4>امتحانات</h4>
-                </v-col>
-            </v-row>
-            <v-row>
                 <v-col cols="12" >
                     <v-card>
                         <v-card-title>
@@ -91,6 +86,35 @@
                     </v-card>
                 </v-col>
             </v-row>
+
+            <v-row>
+                <v-col cols="12" >
+                    <v-card>
+                        <v-card-title>
+                            دانشجویان
+                        </v-card-title>
+                        <v-card-text>
+                        <v-data-table
+                                :header-props="{
+                                    'sort-by-text':'مرتب سازی بر اساس',
+                                }"
+                                :headers="headers"
+                                :items="theClass.quizzes"
+                                :search="search"
+                                :footer-props="{
+                                    showFirstLastPage: true,
+                                    'items-per-page-text':'تعداد در در صفحه',
+                                }"
+                                no-data-text="هنوز دانشجویی اضافه نشده :("
+                            >
+                            <template v-slot:item.actions="{  }">
+                            </template>
+                        </v-data-table>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
+
         </v-container>
 
     </div>
