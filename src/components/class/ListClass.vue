@@ -139,6 +139,11 @@ export default {
                     this.$toasted.error('کلاس پاک نشد');
                 });
             }
+        },
+        goToClass(item) {
+            this.$router.push({ name: 'Class-Page', 
+                params: {class_id: item.id} 
+            });
         }
     },
      data() {

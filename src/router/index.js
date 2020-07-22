@@ -4,7 +4,7 @@ import ListClass from '../components/class/ListClass.vue'
 import AddClass from "../components/class/AddClass";
 import Login from '../components/account/Login'
 import Home from "../views/Home";
-
+import ClassRoom from '../components/class/ClassRoom'
 
 Vue.use(VueRouter)
 
@@ -18,9 +18,18 @@ Vue.use(VueRouter)
       }
     },
     {
+      path: '/',
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/admin',
       name: 'Home',
       component: Home,
+      meta: {
+        requiresAuth: true
+      },
       children: [
         {
           path: '/class/add',
@@ -39,6 +48,16 @@ Vue.use(VueRouter)
             requiresAuth: true
           }
         },
+
+        {
+          path: '/class/:class_id/',
+          name: 'Class-Page',
+          component: ClassRoom,
+          meta: {
+            requiresAuth: true
+          }
+        },
+
       ]
     }
 ]
