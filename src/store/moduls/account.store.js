@@ -7,7 +7,7 @@ export default {
         // loggedIn, loggingIn, error, networkError
         status: '',
         token: localStorage.getItem('token') || '',
-        user: JSON.parse(localStorage.getItem('user'))
+        user: JSON.parse(localStorage.getItem('user')) || ''
 
     },
     mutations: {
@@ -20,6 +20,7 @@ export default {
         logOut: state => {
             state.status = '';
             state.token = '';
+            state.user = ''
         },
         logInFailed: state => state.status = 'error',
         networkError: state => state.status = 'networkError'
@@ -27,7 +28,7 @@ export default {
     getters: {
         user: state => state.user,
         authToken: state => state.token,
-        isLoggedIn: state => !!state.token,
+        isLoggedIn: state => !!state.token && !!state.user,
         authStatus: state => state.status
     },
     actions: {

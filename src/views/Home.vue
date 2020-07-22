@@ -89,7 +89,7 @@
                 :inset="true"
                 :vertical="true"
         ></v-divider>
-        <template v-if="$sotre.getters.isLoggedIn">
+        <template v-if="$store.getters.isLoggedIn">
           {{ $store.getters.user.user.first_name }}
           {{ $store.getters.user.user.last_name }}
         </template>
