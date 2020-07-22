@@ -11,7 +11,7 @@
                     </span>
                 </template>
                 <template v-else>
-                     <span class="error--text">
+                     <span class="error--text" v-if="tried">
                         خطا در دریافت اطلاعات
                     </span>
                 </template>
@@ -144,6 +144,7 @@ export default {
             ],
             class_id: -1,
             loading: true,
+            tried: false,
             isDataSet: false,
             theClass: {}
         }
@@ -163,7 +164,9 @@ export default {
                 if (err && err.response && err.response.data)
                     this.$toasted.error(err.response.data.detail)
                 this.loading = false;
-            } )
+            } ).finally (() => {
+                this.tried = true;
+            })
         }
     },
     mounted() {
