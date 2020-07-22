@@ -89,9 +89,10 @@
                 :inset="true"
                 :vertical="true"
         ></v-divider>
-        {{ $store.getters.user.user.first_name }}
-        {{ $store.getters.user.user.last_name }}
-
+        <template v-if="$sotre.getters.isLoggedIn">
+          {{ $store.getters.user.user.first_name }}
+          {{ $store.getters.user.user.last_name }}
+        </template>
     </v-app-bar>
 
     <v-main>
