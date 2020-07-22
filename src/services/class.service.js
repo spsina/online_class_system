@@ -3,7 +3,8 @@ import axios from 'axios'
 export default {
     fetchAllClasses,
     deleteClass,
-    createClass
+    createClass,
+    classRetrieve
 };
 
 function fetchAllClasses () {
@@ -11,6 +12,15 @@ function fetchAllClasses () {
         axios({
             method: 'GET',
             url: 'class/list/',
+        }).then((response) => resolve(response)).catch(err => reject(err))
+    } );
+}
+
+function classRetrieve (class_id) {
+    return new Promise( (resolve, reject)=>{
+        axios({
+            method: 'GET',
+            url: `class/${class_id}/`,
             data: {},
         }).then((response) => resolve(response)).catch(err => reject(err))
     } );
