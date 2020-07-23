@@ -35,6 +35,19 @@
                     <v-card>
                         <v-card-title>
                             امتحانات
+                            <v-spacer>
+                            </v-spacer>
+                            <v-tooltip bottom v-if="isTeacher">
+                                <template v-slot:activator="{on, attr}">
+                                    <v-btn  v-bind="attr" v-on="on"
+                                            :to="{name: 'Quiz-Add'}"
+                                            icon
+                                            link >
+                                        <v-icon >mdi-plus-box</v-icon>
+                                    </v-btn>
+                                </template>
+                                اضاف کردن امتحان جدید
+                            </v-tooltip>
                         </v-card-title>
                         <v-card-text>
                             <v-data-table
@@ -92,22 +105,11 @@
                 <v-col cols="12">
                     <v-card>
                         <v-card-title>
+
                             <v-container>
                                 <v-row>
-                                    <v-col cols="12" md="3">
-                                        دانشجویان
-                                    </v-col>
-                                    <v-col cols="12" md="6" offset-md="3">
-                                        <v-text-field
-                                                v-model="std_search"
-                                                append-icon="mdi-magnify"
-                                                label="جست و جو"
-                                                single-line
-                                                hide-details
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-                                <v-row>
+                                    دانشجویان
+                                    <v-spacer></v-spacer>
                                     <template v-if="!showRegister && isTeacher">
                                         <v-tooltip top>
                                             <template v-slot:activator="{on, attr}">
@@ -120,11 +122,14 @@
                                             ثبت نام دانشجو
                                         </v-tooltip>
                                     </template>
-
+                                </v-row>
+                                <v-row>
                                     <v-col cols="12">
                                         <v-card v-show="showRegister">
                                             <v-card-title>
                                                 ثبت نام دانشجو با نام کاربری
+                                                <v-spacer></v-spacer>
+                                                <v-icon @click="showRegister=!showRegister">clear</v-icon>
                                             </v-card-title>
                                             <v-card-text>
                                                 <v-form @submit.prevent="registerNewUser" id="register-form">
@@ -145,6 +150,13 @@
                                         </v-card>
                                     </v-col>
                                 </v-row>
+                                <v-text-field
+                                        v-model="std_search"
+                                        append-icon="mdi-magnify"
+                                        label="جست و جو"
+                                        single-line
+                                        hide-details
+                                ></v-text-field>
                             </v-container>
                         </v-card-title>
                         <v-card-text>

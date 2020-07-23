@@ -5,6 +5,7 @@ import AddClass from "../components/class/AddClass";
 import Login from '../components/account/Login'
 import Home from "../views/Home";
 import ClassRoom from '../components/class/ClassRoom'
+import AddQuiz from "../components/class/AddQuiz";
 
 Vue.use(VueRouter)
 
@@ -40,6 +41,14 @@ Vue.use(VueRouter)
             requiresAuth: true
           }
 
+        },
+        {
+          path: '/quiz/add',
+          name: 'Quiz-Add',
+          component: AddQuiz,
+          meta: {
+            requiresAuth: true
+          }
         },
         {
           path: '/class/list',
