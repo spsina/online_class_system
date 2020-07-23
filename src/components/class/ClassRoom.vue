@@ -41,7 +41,7 @@
                                 :header-props="{
                                     'sort-by-text':'مرتب سازی بر اساس',
                                 }"
-                                :headers="headers"
+                                :headers="quiz_data_headers"
                                 :items="theClass.quizzes"
                                 :search="search"
                                 :footer-props="{
@@ -98,16 +98,26 @@
                                 :header-props="{
                                     'sort-by-text':'مرتب سازی بر اساس',
                                 }"
-                                :headers="headers"
-                                :items="theClass.quizzes"
-                                :search="search"
+                                :headers="student_data_headers"
+                                :items="theClass.students"
                                 :footer-props="{
                                     showFirstLastPage: true,
                                     'items-per-page-text':'تعداد در در صفحه',
                                 }"
                                 no-data-text="هنوز دانشجویی اضافه نشده :("
                             >
-                            <template v-slot:item.actions="{  }">
+                            <template v-slot:item.user.actions="{ item }">
+                                <v-tooltip top>
+                                    <template v-slot:activator="{on, attrs}">
+                                        <span v-bind="attrs" v-on="on">
+                                            <v-icon @click="fire(item)" class="red--text">mdi-fire</v-icon>
+                                        </span>
+                                    </template>
+                                    <span>
+                                        اخراج
+                                    </span>
+
+                                </v-tooltip>
                             </template>
                         </v-data-table>
                         </v-card-text>
@@ -128,7 +138,7 @@ export default {
     data() {
         return {
             search: '',
-            headers: [
+            quiz_data_headers: [
                 {
                     text: 'عنوان',
                     align: 'start',
@@ -166,6 +176,32 @@ export default {
                     value: 'is_active',
                 },
             ],
+            student_data_headers: [
+                {
+                    text: 'نام',
+                    align: 'start',
+                    sortable: true,
+                    value: 'user.first_name',
+                },
+                {
+                    text: 'نام خانوادگی',
+                    align: 'start',
+                    sortable: true,
+                    value: 'user.last_name',
+                },
+                {
+                    text: 'نام کاربری',
+                    align: 'start',
+                    sortable: true,
+                    value: 'user.username',
+                },
+                {
+                    text: 'عملیات',
+                    align: 'start',
+                    sortable: true,
+                    value: 'user.actions',
+                },
+            ],
             class_id: -1,
             loading: true,
             tried: false,
@@ -175,6 +211,20 @@ export default {
     },
     methods: {
         moment,
+        fire(item) {
+            if(confirm("آیا مطمئنید؟")){
+                ClassServices.fire(this.class_id, item.id)
+                .then( () => {
+                    this.theClass.students = this.theClass.students.filter((std) => std.id !== item.id);
+                    this.$toasted.success("دانشجو اخراج شد");
+                } )
+                .catch((err) => {
+                    if (err && err.response && err.response.data)
+                        this.$toasted.error(err.response.data)
+                })
+            }
+        },
+
         loadClassData() {
             this.loading = true;
             ClassServices.classRetrieve(this.class_id)

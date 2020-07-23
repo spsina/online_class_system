@@ -4,7 +4,8 @@ export default {
     fetchAllClasses,
     deleteClass,
     createClass,
-    classRetrieve
+    classRetrieve,
+    fire
 };
 
 function fetchAllClasses () {
@@ -42,6 +43,15 @@ function createClass (classData) {
             method: 'POST',
             url: `class/create/`,
             data: classData,
+        }).then((response) => resolve(response)).catch(err => reject(err))
+    } );
+}
+
+function fire(classId, studentId) {
+    return new Promise( (resolve, reject)=>{
+        axios({
+            method: 'DELETE',
+            url: `class/${classId}/register/${studentId}/`,
         }).then((response) => resolve(response)).catch(err => reject(err))
     } );
 }
