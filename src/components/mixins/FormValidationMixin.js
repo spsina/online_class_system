@@ -4,15 +4,15 @@ export default  {
             return candidObject && candidObject.constructor === Object
         },
         clearRawForm(rawFormData) {
-            let _class = {}
+            let _cleared = {}
             for (let key in rawFormData){
                 if (this.isObject(rawFormData[key].value))
-                    _class[key] = this.clearRawForm(rawFormData[key].value)
+                    _cleared[key] = this.clearRawForm(rawFormData[key].value)
                 else
-                    _class[key] = rawFormData[key].value
+                    _cleared[key] = rawFormData[key].value
             }
 
-            return _class;
+            return _cleared;
         },
         clearFormErrors(rawFormData){
             for (let key in rawFormData){
