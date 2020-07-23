@@ -108,7 +108,7 @@
                                     </v-col>
                                 </v-row>
                                 <v-row>
-                                    <template v-if="!showRegister && $store.getters.user.id === theClass.teacher.id">
+                                    <template v-if="!showRegister && isTeacher">
                                         <v-tooltip top>
                                             <template v-slot:activator="{on, attr}">
                                                 <v-icon
@@ -161,7 +161,7 @@
                                 }"
                                     no-data-text="هنوز دانشجویی اضافه نشده :("
                             >
-                                <template v-slot:item.user.actions="{ item }">
+                                <template v-slot:item.user.actions="{ item }" v-if="isTeacher">
                                     <v-tooltip top>
                                         <template v-slot:activator="{on, attrs}">
                                         <span v-bind="attrs" v-on="on">
@@ -272,6 +272,12 @@
                 tried: false,
                 isDataSet: false,
                 theClass: {}
+            }
+        },
+        computed: {
+            isTeacher() {
+                return this.$store.getters.user.id === this.theClass.teacher.id ||
+                    this.$store.getters.user.user.is_superuser;
             }
         },
         methods: {
