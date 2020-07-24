@@ -3,7 +3,7 @@
         <v-app-bar
                 app
                 fixed
-                    class="lighten-5 ma-5 toolbar"
+                    class="lighten-4 ma-5 toolbar"
                     :class="{
                         'green': !saving_general_quiz_data && quiz_id != null && !isQuizDataChanged,
                         'red': (quiz_id == null && !saving_general_quiz_data) || isQuizDataChanged,
@@ -17,7 +17,7 @@
                 <TopInfo
                         icon="mdi-help"
                         title="تعداد سوالات"
-                        value="12"
+                        :value="questions.length"
                 />
                 <TopInfo
                         icon="mdi-counter"
@@ -95,13 +95,16 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col cols="12">
+                <v-col cols="12" v-for="(question, index) in questions" :key="question._id">
                     <span class="mx-5">
-                        سوال 1
+                        سوال
+                        {{ index+1 }}
                     </span>
                     <v-card class="mt-5">
                         <v-card-title>
                             <v-text-field
+                                    v-model="questions[index].fields.text.value"
+                                    :error-messages="questions[index].fields.text.errors"
                             label="عنوان سوال"
                             />
                         </v-card-title>
@@ -111,14 +114,23 @@
                                     <v-text-field
                                             label="بارم سوال"
                                             type="number"
-                                            :rules="[ v => v > 0 || 'بارم سوال منفی شده']"
+                                            :rules="[ v => v > 0 || 'بارم سوال مثبت نیست']"
                                     />
                                 </v-col>
-                                <v-col cols="12">
+                                <v-col cols="9">
                                     <v-btn
                                         block
                                     >
                                         ثبت یا ویرایش سوال
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3">
+                                    <v-btn
+                                            @click="removeQuestion(question)"
+                                            class="red lighten-1 white--text"
+                                            block
+                                    >
+                                        حذف این سوال
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -126,6 +138,14 @@
                     </v-card>
                 </v-col>
             </v-row>
+            <v-tooltip bottom>
+                <template v-slot:activator="{on, attr}">
+                    <v-btn @click="addRawQuestion" icon link v-bind="attr" v-on="on">
+                        <v-icon>mdi-plus-box</v-icon>
+                    </v-btn>
+                </template>
+                سوال جدید
+            </v-tooltip>
         </v-container>
     </div>
 </template>
@@ -162,6 +182,7 @@
                         errors: []
                     }
                 },
+                questions: []
             }
         },
         created() {
@@ -177,7 +198,29 @@
             },
         },
         methods: {
-
+            rawQuestion() {
+                return {
+                    id: null,
+                    _id: 'id' + (new Date()).getTime(),
+                    fields: {
+                        text: {
+                            value: '',
+                            errors: []
+                        },
+                        credit: {
+                            value: 1,
+                            errors: []
+                        }
+                    }
+                }
+            },
+            addRawQuestion() {
+                this.questions.push(this.rawQuestion())
+            },
+            removeQuestion(question) {
+                this.questions = this.questions.filter((q) => q._id !== question._id)
+                // remove from server
+            },
             makeOrUpdate() {
                 let quizData = this.clearRawForm(this.theQuiz);
                 if (!this.datesSet)
