@@ -1,48 +1,45 @@
 <template>
     <div>
-        <v-toolbar
-                class="lighten-5"
-                :class="{
+        <v-app-bar
+                app
+                fixed
+                    class="lighten-5 ma-5 toolbar"
+                    :class="{
                         'green': !saving_general_quiz_data && quiz_id != null && !isQuizDataChanged,
                         'red': (quiz_id == null && !saving_general_quiz_data) || isQuizDataChanged,
                         'orange': saving_general_quiz_data
                     }"
-        >
-            <v-toolbar-title>
-                {{ theQuiz.quiz_name.value }}
+            >
+                <v-toolbar-title >
+                    {{ theQuiz.quiz_name.value }}
 
-                <template v-if="startDateMoment">
-                    -
-                    از
-                    {{ startDateMoment.format('dddd jDD jMMMM jYYYY ساعت HH:mm') }}
-                </template>
-                <template v-if="endDateMoment">
-                    تا
-                    {{ endDateMoment.format('dddd jDD jMMMM jYYYY ساعت HH:mm') }}
-                </template>
-            </v-toolbar-title>
-            <TopInfo
-                    icon="mdi-help"
-                    title="تعداد سوالات"
-                    value="12"
-            />
-            <TopInfo
-                    icon="mdi-counter"
-                    title="بارم کل"
-                    value="20"
-            />
-            <v-spacer></v-spacer>
-            وضعیت انتشار: پیش نویس
-            <v-tooltip bottom>
-                <template v-slot:activator="{on, attr}">
-                    <v-btn icon link v-bind="attr" v-on="on">
-                        <v-icon class="green--text">publish</v-icon>
-                    </v-btn>
-                </template>
-                انتشار امتحان
-            </v-tooltip>
-        </v-toolbar>
-
+                </v-toolbar-title>
+                <TopInfo
+                        icon="mdi-help"
+                        title="تعداد سوالات"
+                        value="12"
+                />
+                <TopInfo
+                        icon="mdi-counter"
+                        title="بارم کل"
+                        value="20"
+                />
+                <TopInfo
+                        icon="mdi-earth"
+                        title="وضعیت انتشار"
+                        value="پیش نویس"
+                />
+                <v-spacer></v-spacer>
+                <v-tooltip bottom>
+                    <template v-slot:activator="{on, attr}">
+                        <v-btn icon link v-bind="attr" v-on="on">
+                            <v-icon class="green--text">publish</v-icon>
+                        </v-btn>
+                    </template>
+                    انتشار امتحان
+                </v-tooltip>
+            </v-app-bar>
+        <div class="spacer"></div>
         <v-container>
             <v-row>
                 <v-col cols="12">
@@ -63,7 +60,7 @@
                                     </v-col>
                                 </v-row>
                                 <v-row justify="start" align="start">
-                                    <v-col cols="6">
+                                    <v-col cols="12" md="6">
                                         <MyDatePicker v-model="theQuiz.start_datetime.value"
                                                       activator-id="start-date"
                                                       @change="startDateMoment=$event"
@@ -72,7 +69,7 @@
                                         />
                                     </v-col>
 
-                                    <v-col cols="6">
+                                    <v-col cols="12" md="6">
                                         <MyDatePicker v-model="theQuiz.end_datetime.value"
                                                       activator-id="end-date"
                                                       @change="endDateMoment=$event"
@@ -93,6 +90,38 @@
                                     ثبت یا ویرایش اطلاعات
                                 </v-btn>
                             </v-form>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="12">
+                    <span class="mx-5">
+                        سوال 1
+                    </span>
+                    <v-card class="mt-5">
+                        <v-card-title>
+                            <v-text-field
+                            label="عنوان سوال"
+                            />
+                        </v-card-title>
+                        <v-card-text>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-text-field
+                                            label="بارم سوال"
+                                            type="number"
+                                            :rules="[ v => v > 0 || 'بارم سوال منفی شده']"
+                                    />
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-btn
+                                        block
+                                    >
+                                        ثبت یا ویرایش سوال
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -141,7 +170,7 @@
 
         computed: {
             datesSet() {
-                return !!this.theQuiz.start_datetime.value && !!this.theQuiz.end_datetime.value;
+                return !!this.theQuiz.start_datetime.value && !!this.theQuiz.end_datetime.value && this.isQuizDataChanged;
             },
             isQuizDataChanged() {
                 return this.isChanged(this.theQuiz);
@@ -184,5 +213,11 @@
 </script>
 
 <style scoped>
-
+   .toolbar{
+       top: 56px;
+   }
+    .spacer {
+        height: 56px;
+        display: block;
+    }
 </style>
