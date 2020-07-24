@@ -75,23 +75,32 @@
                                 </template>
                                 <template v-slot:item.is_active="{item}">
                                     <template v-if="item.is_active">
+
                                         <v-tooltip top>
                                             <template v-slot:activator="{on, attr}">
-                                                <v-icon v-bind="attr" v-on="on"
-                                                        class="green--text blink">mdi-radiobox-marked
+                                                <span v-bind="attr" v-on="on">
+                                                    <v-icon   class="green--text blink">
+                                                    mdi-radiobox-marked
+                                                </v-icon>
+                                                </span>
+                                            </template>
+                                            امتحان در حال برگزاری است
+                                        </v-tooltip>
+
+                                    </template>
+
+                                    <template v-else>
+
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{on, attr}">
+                                                <v-icon v-bind="attr" v-on="on"  >
+                                                    mdi-radiobox-marked
                                                 </v-icon>
                                             </template>
-                                            امتحان درحال برگزاری است
+                                            امتحان فعال نیست
                                         </v-tooltip>
                                     </template>
-                                    <template v-else>
-                                        <v-tooltip top>
-                                            <template v-slot:activator="{on, attr}">
-                                                <v-icon v-bind="attr" v-on="on">mdi-radiobox-marked</v-icon>
-                                            </template>
-                                            امتحان درحال برگزاری است
-                                        </v-tooltip>
-                                    </template>
+
                                 </template>
                                 <template v-slot:item.actions="{  }">
                                 </template>

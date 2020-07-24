@@ -3,8 +3,8 @@
         <v-toolbar
                 class="lighten-5"
                 :class="{
-                        'green': !saving_general_quiz_data && quiz_id != null,
-                        'red': (quiz_id == null && !saving_general_quiz_data) || dataChanged,
+                        'green': !saving_general_quiz_data && quiz_id != null && !isQuizDataChanged,
+                        'red': (quiz_id == null && !saving_general_quiz_data) || isQuizDataChanged,
                         'orange': saving_general_quiz_data
                     }"
         >
@@ -20,9 +20,7 @@
                     تا
                     {{ endDateMoment.format('dddd jDD jMMMM jYYYY ساعت HH:mm') }}
                 </template>
-
             </v-toolbar-title>
-            <v-spacer></v-spacer>
             <TopInfo
                     icon="mdi-help"
                     title="تعداد سوالات"
@@ -33,6 +31,16 @@
                     title="بارم کل"
                     value="20"
             />
+            <v-spacer></v-spacer>
+            وضعیت انتشار: پیش نویس
+            <v-tooltip bottom>
+                <template v-slot:activator="{on, attr}">
+                    <v-btn icon link v-bind="attr" v-on="on">
+                        <v-icon class="green--text">publish</v-icon>
+                    </v-btn>
+                </template>
+                انتشار امتحان
+            </v-tooltip>
         </v-toolbar>
 
         <v-container>
@@ -103,7 +111,6 @@
         name: "AddQuiz.vue",
         data() {
             return {
-                dataChanged: true,
                 startDateMoment: null,
                 endDateMoment: null,
                 quiz_id: null,
@@ -111,19 +118,21 @@
                 saving_general_quiz_data: false,
                 theQuiz: {
                     quiz_name: {
+                        saved_value: '',
                         value: '',
                         errors: []
                     },
                     start_datetime: {
                         value: '',
+                        saved_value: '',
                         errors: []
                     },
                     end_datetime: {
+                        saved_value: '',
                         value: '',
                         errors: []
                     }
                 },
-                savedQuiz: null
             }
         },
         created() {
@@ -131,36 +140,37 @@
         },
 
         computed: {
-          datesSet() {
-              return !!this.theQuiz.start_datetime.value && !!this.theQuiz.end_datetime.value;
-          }
+            datesSet() {
+                return !!this.theQuiz.start_datetime.value && !!this.theQuiz.end_datetime.value;
+            },
+            isQuizDataChanged() {
+                return this.isChanged(this.theQuiz);
+            },
         },
         methods: {
-            changed(){
-                console.log("changed")
-            },
-          makeOrUpdate() {
-              let quizData = this.clearRawForm(this.theQuiz);
-              if (!this.datesSet)
-                  return
 
-              this.saving_general_quiz_data = true;
+            makeOrUpdate() {
+                let quizData = this.clearRawForm(this.theQuiz);
+                if (!this.datesSet)
+                    return
 
-              // create a new quiz
-              if (this.quiz_id == null) {
-                  ClassServices.createQuiz(this.class_id, quizData)
-                  .then( (response) => {
-                      this.quiz_id = response.data.id;
-                      this.saving_general_quiz_data = false;
-                      this.dataChanged = false;
-                      this.clearFormErrors(this.theQuiz);
-                  } )
-                  .catch((err) => {
-                      this.setErrors(this.theQuiz, err);
-                      this.saving_general_quiz_data = false;
-                  })
-              }
-          }
+                this.saving_general_quiz_data = true;
+
+                // create a new quiz
+                if (this.quiz_id == null) {
+                    ClassServices.createQuiz(this.class_id, quizData)
+                        .then((response) => {
+                            this.saveCurrentValues(this.theQuiz);
+                            this.quiz_id = response.data.id;
+                            this.saving_general_quiz_data = false;
+                            this.clearFormErrors(this.theQuiz);
+                        })
+                        .catch((err) => {
+                            this.setErrors(this.theQuiz, err);
+                            this.saving_general_quiz_data = false;
+                        })
+                }
+            }
         },
         mixins: [
             FormValidationMixin

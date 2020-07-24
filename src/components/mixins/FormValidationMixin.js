@@ -3,6 +3,27 @@ export default  {
         isObject(candidObject){
             return candidObject && candidObject.constructor === Object
         },
+        saveCurrentValues (rawFormData) {
+            for (let key in rawFormData){
+                if (this.isObject(rawFormData[key].value))
+                    this.saveCurrentValues(rawFormData[key].value)
+                else
+                    rawFormData[key].saved_value = rawFormData[key].value;
+            }
+        },
+        isChanged(rawFormData) {
+
+            for (let key in rawFormData){
+                if (this.isObject(rawFormData[key].value)) {
+                    if (this.isChanged(rawFormData[key].value))
+                        return true
+                }
+                if (rawFormData[key].saved_value !== rawFormData[key].value)
+                    return true
+            }
+
+            return false;
+        },
         clearRawForm(rawFormData) {
             let _cleared = {}
             for (let key in rawFormData){

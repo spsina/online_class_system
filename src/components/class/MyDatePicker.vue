@@ -23,6 +23,9 @@
                             format="YYYY-MM-DDTHH:mm:ss"
                             type="datetime"
                             v-model="value_"
+                            local="fa"
+                            :timezone="true"
+
                     />
                 </v-col>
             </v-row>
