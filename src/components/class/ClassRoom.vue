@@ -40,7 +40,7 @@
                             <v-tooltip bottom v-if="isTeacher">
                                 <template v-slot:activator="{on, attr}">
                                     <v-btn  v-bind="attr" v-on="on"
-                                            :to="{name: 'Quiz-Add'}"
+                                            :to="{name: 'Quiz-Add', params: {class_id: class_id}}"
                                             icon
                                             link >
                                         <v-icon >mdi-plus-box</v-icon>

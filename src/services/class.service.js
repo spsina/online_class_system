@@ -6,7 +6,8 @@ export default {
     createClass,
     classRetrieve,
     fire,
-    register
+    register,
+    createQuiz,
 };
 
 function fetchAllClasses () {
@@ -65,4 +66,12 @@ function register(classId, username) {
         }).then((response) => resolve(response)).catch(err => reject(err))
     } );
 }
-
+function createQuiz(classId, quizData) {
+    return new Promise( (resolve, reject)=>{
+        axios({
+            method: 'POST',
+            url: `class/${classId}/quiz/create/`,
+            data: quizData,
+        }).then((response) => resolve(response)).catch(err => reject(err))
+    } );
+}

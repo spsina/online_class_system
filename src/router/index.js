@@ -43,7 +43,7 @@ Vue.use(VueRouter)
 
         },
         {
-          path: '/quiz/add',
+          path: 'class/:class_id/quiz/add',
           name: 'Quiz-Add',
           component: AddQuiz,
           meta: {

@@ -22,6 +22,7 @@ export default  {
             }
         },
         setErrors(rawFormData, err){
+            this.clearFormErrors(rawFormData);
             if (err && err.response && err.response.data) {
                 for (let key in err.response.data) {
                     if (key === 'non_field_errors') {
