@@ -95,7 +95,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col cols="12" v-for="(question, index) in questions" :key="question._id">
+                <v-col cols="12" v-for="(question, index) in questions" :key="question._id" :id="question._id">
                     <span class="mx-5">
                         سوال
                         {{ index+1 }}
@@ -160,6 +160,7 @@
         name: "AddQuiz.vue",
         data() {
             return {
+                lastQ: null,
                 startDateMoment: null,
                 endDateMoment: null,
                 quiz_id: null,
@@ -215,7 +216,10 @@
                 }
             },
             addRawQuestion() {
-                this.questions.push(this.rawQuestion())
+                let newQ = this.rawQuestion();
+                this.lastQ = newQ._id;
+                this.questions.push(newQ);
+
             },
             removeQuestion(question) {
                 this.questions = this.questions.filter((q) => q._id !== question._id)
@@ -247,6 +251,12 @@
         mixins: [
             FormValidationMixin
         ],
+        updated() {
+            if (this.questions.length > 0) {
+                let _id = this.questions[this.questions.length - 1]._id;
+                document.getElementById(_id + '').scrollIntoView()
+            }
+        },
         components: {
             MyDatePicker,
             TopInfo,
