@@ -41,6 +41,7 @@
             </v-app-bar>
         <div class="spacer"></div>
         <v-container>
+
             <v-row>
                 <v-col cols="12">
                     <v-card>
@@ -181,7 +182,7 @@
                 theQuiz: {
                     quiz_name: {
                         saved_value: '',
-                        value: '',
+                        value: 'name',
                         errors: []
                     },
                     start_datetime: {
@@ -207,7 +208,22 @@
                 return !!this.theQuiz.start_datetime.value && !!this.theQuiz.end_datetime.value && this.isQuizDataChanged;
             },
             isQuizDataChanged() {
-                return this.isChanged(this.theQuiz);
+                return this.isChanged(this.theQuiz) || this.anyQuestionsChanged;
+            },
+
+            anyQuestionsChanged() {
+                if (this.questions.length === 0)
+                    return false;
+                for (let index in this.questions) {
+                    console.log("__");
+                    console.log(this.isChanged(this.questions[index].fields));
+                    console.log(this.questions[index].fields);
+                    console.log("__");
+
+                    if (this.isChanged(this.questions[index].fields))
+                        return true
+                }
+                return false;
             },
         },
         methods: {
@@ -219,7 +235,7 @@
                     fields: {
                         text: {
                             value: '',
-                            save_value: '',
+                            saved_value: '',
                             errors: []
                         },
                         credit: {
@@ -259,8 +275,11 @@
             },
             removeQuestion(question) {
 
-                if (question.id === null)
+                if (question.id === null) {
+                    this.questions = this.questions.filter((q) => q._id !== question._id)
+
                     return;
+                }
 
                 ClassServices.updateDeleteQuestion(question.id, {}, true)
                 .then(() => {
