@@ -8,6 +8,8 @@ export default {
     fire,
     register,
     createQuiz,
+    updateQuiz,
+    deleteQuiz
 };
 
 function fetchAllClasses () {
@@ -72,6 +74,25 @@ function createQuiz(classId, quizData) {
             method: 'POST',
             url: `class/${classId}/quiz/create/`,
             data: quizData,
+        }).then((response) => resolve(response)).catch(err => reject(err))
+    } );
+}
+
+function updateQuiz(quizId, quizData) {
+    return new Promise( (resolve, reject)=>{
+        axios({
+            method: 'PUT',
+            url: `/quiz/${quizId}/update/`,
+            data: quizData,
+        }).then((response) => resolve(response)).catch(err => reject(err))
+    } );
+}
+
+function deleteQuiz(quizId) {
+    return new Promise( (resolve, reject)=>{
+        axios({
+            method: 'DELETE',
+            url: `/quiz/${quizId}/update/`,
         }).then((response) => resolve(response)).catch(err => reject(err))
     } );
 }

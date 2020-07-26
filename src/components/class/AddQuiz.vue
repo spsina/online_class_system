@@ -100,7 +100,16 @@
                         سوال
                         {{ index+1 }}
                     </span>
-                    <v-card class="mt-5">
+                    <v-card class="mt-5 lighten-5"
+                            :class="{
+                                orange: question.saving,
+                                red: !question.saving && ( question.id === null ||
+                                    isChanged(question.fields)
+                                ),
+                                green: question.id !== null && !question.saving && !isChanged(question.fields)
+
+                            }"
+                    >
                         <v-card-title>
                             <v-text-field
                                     v-model="questions[index].fields.text.value"
@@ -119,6 +128,7 @@
                                 </v-col>
                                 <v-col cols="9">
                                     <v-btn
+                                            @click="addSaveQuestion(question)"
                                         block
                                     >
                                         ثبت یا ویرایش سوال
@@ -203,18 +213,27 @@
                 return {
                     id: null,
                     _id: 'id' + (new Date()).getTime(),
+                    saving: false,
                     fields: {
                         text: {
                             value: '',
+                            save_value: '',
                             errors: []
                         },
                         credit: {
                             value: 1,
+                            saved_value: '',
                             errors: []
                         }
                     }
                 }
             },
+
+            // addSaveQuestion(question){
+            //     let qData = this.clearForm(question.fields);
+            //     question.saving = true;
+            //
+            // },
             addRawQuestion() {
                 let newQ = this.rawQuestion();
                 this.lastQ = newQ._id;
@@ -231,21 +250,29 @@
                     return
 
                 this.saving_general_quiz_data = true;
-
-                // create a new quiz
+                let endpoint;
+                let id;
+                // select endpoint
                 if (this.quiz_id == null) {
-                    ClassServices.createQuiz(this.class_id, quizData)
-                        .then((response) => {
-                            this.saveCurrentValues(this.theQuiz);
-                            this.quiz_id = response.data.id;
-                            this.saving_general_quiz_data = false;
-                            this.clearFormErrors(this.theQuiz);
-                        })
-                        .catch((err) => {
-                            this.setErrors(this.theQuiz, err);
-                            this.saving_general_quiz_data = false;
-                        })
+                    endpoint = ClassServices.createQuiz;
+                    id = this.class_id;
                 }
+                else {
+                    endpoint = ClassServices.updateQuiz;
+                    id = this.quiz_id;
+                }
+
+                endpoint(id, quizData)
+                    .then((response) => {
+                        this.saveCurrentValues(this.theQuiz);
+                        this.quiz_id = response.data.id;
+                        this.saving_general_quiz_data = false;
+                        this.clearFormErrors(this.theQuiz);
+                    })
+                    .catch((err) => {
+                        this.setErrors(this.theQuiz, err);
+                        this.saving_general_quiz_data = false;
+                    })
             }
         },
         mixins: [
