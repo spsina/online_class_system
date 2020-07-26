@@ -94,7 +94,7 @@
                     </v-card>
                 </v-col>
             </v-row>
-            <v-row>
+            <v-row >
                 <v-col cols="12" v-for="(question, index) in questions" :key="question._id" :id="question._id">
                     <span class="mx-5">
                         سوال
@@ -121,6 +121,7 @@
                             <v-row>
                                 <v-col cols="12">
                                     <v-text-field
+                                            v-model="question.fields.credit.value"
                                             label="بارم سوال"
                                             type="number"
                                             :rules="[ v => v > 0 || 'بارم سوال مثبت نیست']"
@@ -150,7 +151,7 @@
             </v-row>
             <v-tooltip bottom>
                 <template v-slot:activator="{on, attr}">
-                    <v-btn @click="addRawQuestion" icon link v-bind="attr" v-on="on">
+                    <v-btn @click="addRawQuestion" icon link v-bind="attr" v-on="on" :disabled="quiz_id === null">
                         <v-icon>mdi-plus-box</v-icon>
                     </v-btn>
                 </template>
@@ -174,6 +175,7 @@
                 startDateMoment: null,
                 endDateMoment: null,
                 quiz_id: null,
+                doScroll: false,
                 class_id: null,
                 saving_general_quiz_data: false,
                 theQuiz: {
@@ -222,27 +224,58 @@
                         },
                         credit: {
                             value: 1,
-                            saved_value: '',
+                            saved_value: 0,
                             errors: []
                         }
                     }
                 }
             },
 
-            // addSaveQuestion(question){
-            //     let qData = this.clearForm(question.fields);
-            //     question.saving = true;
-            //
-            // },
+            addSaveQuestion(question, isDelete=false) {
+                let qData = this.clearRawForm(question.fields);
+                question.saving = true;
+
+                let id;
+                let endpoint;
+
+                if (question.id === null) {
+                    id = this.quiz_id;
+                    endpoint = ClassServices.addQuestion
+                } else {
+                    id = question.id;
+                    endpoint = ClassServices.updateDeleteQuestion;
+                }
+
+                endpoint(id, qData, isDelete)
+                    .then((response) => {
+                        this.saveCurrentValues(question.fields);
+                        question.id = response.data.id;
+                        this.clearFormErrors(question.fields);
+                    })
+                    .catch((err) => {
+                        this.setErrors(question.fields, err);
+                    }).finally(() => {question.saving = false;});
+
+            },
+            removeQuestion(question) {
+
+                if (question.id === null)
+                    return;
+
+                ClassServices.updateDeleteQuestion(question.id, {}, true)
+                .then(() => {
+                    this.$toasted.success("سوال حذف شد");
+                    this.questions = this.questions.filter((q) => q._id !== question._id)
+
+                } )
+                .catch( () => this.$toasted.error("خظا در حذف سوا") );
+            },
             addRawQuestion() {
                 let newQ = this.rawQuestion();
                 this.lastQ = newQ._id;
                 this.questions.push(newQ);
+                this.doScroll = true;
 
-            },
-            removeQuestion(question) {
-                this.questions = this.questions.filter((q) => q._id !== question._id)
-                // remove from server
             },
             makeOrUpdate() {
                 let quizData = this.clearRawForm(this.theQuiz);
@@ -279,9 +312,12 @@
             FormValidationMixin
         ],
         updated() {
-            if (this.questions.length > 0) {
-                let _id = this.questions[this.questions.length - 1]._id;
-                document.getElementById(_id + '').scrollIntoView()
+            if (this.doScroll) {
+                this.doScroll = false;
+                if (this.questions.length > 0) {
+                    let _id = this.questions[this.questions.length - 1]._id;
+                    document.getElementById(_id + '').scrollIntoView()
+                }
             }
         },
         components: {

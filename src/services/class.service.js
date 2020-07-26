@@ -9,7 +9,9 @@ export default {
     register,
     createQuiz,
     updateQuiz,
-    deleteQuiz
+    deleteQuiz,
+    addQuestion,
+    updateDeleteQuestion
 };
 
 function fetchAllClasses () {
@@ -93,6 +95,26 @@ function deleteQuiz(quizId) {
         axios({
             method: 'DELETE',
             url: `/quiz/${quizId}/update/`,
+        }).then((response) => resolve(response)).catch(err => reject(err))
+    } );
+}
+
+function addQuestion(quizId, qData) {
+    return new Promise( (resolve, reject)=>{
+        axios({
+            method: 'POST',
+            url: `quiz/${quizId}/question/create/`,
+            data: qData,
+        }).then((response) => resolve(response)).catch(err => reject(err))
+    } );
+}
+
+function updateDeleteQuestion(questionId, qData, isDelete) {
+    return new Promise( (resolve, reject)=>{
+        axios({
+            method:  (!isDelete) ? 'PUT': 'DELETE',
+            url: `question/${questionId}/`,
+            data: qData,
         }).then((response) => resolve(response)).catch(err => reject(err))
     } );
 }
