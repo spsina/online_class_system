@@ -22,7 +22,7 @@
                 <TopInfo
                         icon="mdi-counter"
                         title="بارم کل"
-                        value="20"
+                        :value="totalScore"
                 />
                 <TopInfo
                         icon="mdi-earth"
@@ -210,7 +210,14 @@
             isQuizDataChanged() {
                 return this.isChanged(this.theQuiz) || this.anyQuestionsChanged;
             },
+            totalScore() {
+                let sum = 0;
+                for (let index in this.questions) {
+                    sum += parseInt(this.questions[index].fields.credit.value);
+                }
 
+                return sum;
+            },
             anyQuestionsChanged() {
                 if (this.questions.length === 0)
                     return false;
