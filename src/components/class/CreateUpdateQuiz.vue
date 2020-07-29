@@ -5,9 +5,9 @@
                 fixed
                     class="lighten-4 ma-5 toolbar"
                     :class="{
-                        'green': !saving_general_quiz_data && quiz_id != null && !isQuizDataChanged,
-                        'red': (quiz_id == null && !saving_general_quiz_data) || isQuizDataChanged,
-                        'orange': saving_general_quiz_data
+                        'green': !loading && quiz_id != null && !isQuizDataChanged,
+                        'red': (quiz_id == null && !loading) || isQuizDataChanged,
+                        'orange': loading
                     }"
             >
                 <v-toolbar-title >
@@ -86,7 +86,7 @@
                                         block
                                         type="submit"
                                         :disabled="!datesSet"
-                                        :loading="saving_general_quiz_data"
+                                        :loading="loading"
                                 >
                                     ثبت یا ویرایش اطلاعات
                                 </v-btn>
@@ -166,19 +166,21 @@
     import TopInfo from "./TopInfo";
     import MyDatePicker from "./MyDatePicker";
     import FormValidationMixin from "../mixins/FormValidationMixin";
-    import ClassServices from '../../services/class.service'
+    import QuizService from '../../services/quiz.service'
 
     export default {
         name: "AddQuiz.vue",
         data() {
             return {
-                lastQ: null,
-                startDateMoment: null,
-                endDateMoment: null,
-                quiz_id: null,
-                doScroll: false,
-                class_id: null,
-                saving_general_quiz_data: false,
+                lastQ: null,                // last added question
+                startDateMoment: null,      // quiz start time
+                endDateMoment: null,        // quiz end time
+                quiz_id: null,              // quiz id
+                doScroll: false,            // if window should scroll to the latest question
+                class_id: null,             //  id of the class, this quiz is being created for
+                loading: false,             // saving/updating/fetching indicator
+
+                // structure of a the quiz form data
                 theQuiz: {
                     quiz_name: {
                         saved_value: '',
@@ -196,49 +198,89 @@
                         errors: []
                     }
                 },
+
+                // an array of questions for this quiz
                 questions: []
             }
         },
         created() {
+            // get class id
             this.class_id = this.$route.params['class_id'];
         },
 
         computed: {
             datesSet() {
-                return !!this.theQuiz.start_datetime.value && !!this.theQuiz.end_datetime.value && this.isQuizDataChanged;
+                // if start date time and end date time of the quiz are set
+                return !!this.theQuiz.start_datetime.value &&
+                    !!this.theQuiz.end_datetime.value &&
+                    this.isQuizDataChanged;
             },
             isQuizDataChanged() {
+                // if there has been any unsaved changes
                 return this.isChanged(this.theQuiz) || this.anyQuestionsChanged;
             },
             totalScore() {
+                // sum of credits of all the questions
                 let sum = 0;
-                for (let index in this.questions) {
-                    sum += parseInt(this.questions[index].fields.credit.value);
-                }
-
+                this.questions.forEach((Q) => {
+                    sum += parseInt(Q.fields.credit.value);
+                });
                 return sum;
             },
             anyQuestionsChanged() {
+                // if there is any unsaved questions or changes is questions
+
+                // no change if no questions
                 if (this.questions.length === 0)
                     return false;
-                for (let index in this.questions) {
-                    console.log("__");
-                    console.log(this.isChanged(this.questions[index].fields));
-                    console.log(this.questions[index].fields);
-                    console.log("__");
 
-                    if (this.isChanged(this.questions[index].fields))
-                        return true
-                }
-                return false;
+                // detect any unsaved changes
+                let changed = false;
+                this.questions.forEach((Q) => {
+                    if (this.isChanged(Q.fields)) {
+                        changed = true;
+                    }
+                });
+
+                return changed;
             },
         },
         methods: {
+            setupAsUpdatePage() {
+                // if quiz id is present, then this is an update page
+                let _quiz_id = this.$route.params['quiz_id'];
+
+                if (_quiz_id){
+                    this.quiz_id = _quiz_id;
+
+                    /*
+                    fetch quiz general info, the fetch quiz questions and
+                    setup the page accordingly
+
+                    if quiz with the given id is not found, show an error message
+                    * */
+
+                    // set loading indicator
+                    this.loading = true;
+
+                    QuizService.quizRetrieve(this.quiz_id)
+                        .then((res) => {
+                            console.log(res.data);
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.$toasted.error(err.data);
+                        })
+                }
+            },
             rawQuestion() {
+                // return an empty structure for question
                 return {
-                    id: null,
-                    _id: 'id' + (new Date()).getTime(),
-                    saving: false,
+                    id: null,   // question id in db
+                    _id: 'id' + (new Date()).getTime(), // internal id (used only in front)
+                    saving: false,                      // indicates if question is being saved
+
+                    // question form data structure
                     fields: {
                         text: {
                             value: '',
@@ -255,20 +297,31 @@
             },
 
             addSaveQuestion(question, isDelete=false) {
+                /* create a new question based on the given data
+                 or update/delete an existing question
+                 */
+
+                // get all field values
                 let qData = this.clearRawForm(question.fields);
+
+                // set saving indicator
                 question.saving = true;
 
+                // determine the id and endpoint
                 let id;
                 let endpoint;
 
+                // new question
                 if (question.id === null) {
                     id = this.quiz_id;
-                    endpoint = ClassServices.addQuestion
+                    endpoint = QuizService.addQuestion
                 } else {
+                    // update question
                     id = question.id;
-                    endpoint = ClassServices.updateDeleteQuestion;
+                    endpoint = QuizService.updateDeleteQuestion;
                 }
 
+                // send the request
                 endpoint(id, qData, isDelete)
                     .then((response) => {
                         this.saveCurrentValues(question.fields);
@@ -281,14 +334,17 @@
 
             },
             removeQuestion(question) {
+                /* Delete a question */
 
+                // the question is locally created, so no server side request needed
                 if (question.id === null) {
                     this.questions = this.questions.filter((q) => q._id !== question._id)
 
                     return;
                 }
 
-                ClassServices.updateDeleteQuestion(question.id, {}, true)
+                // send delete request and remove locally only if server request is successful
+                QuizService.updateDeleteQuestion(question.id, {}, true)
                 .then(() => {
                     this.$toasted.success("سوال حذف شد");
                     this.questions = this.questions.filter((q) => q._id !== question._id)
@@ -297,6 +353,8 @@
                 .catch( () => this.$toasted.error("خظا در حذف سوا") );
             },
             addRawQuestion() {
+                // append an empty question structure to the array of questions
+
                 let newQ = this.rawQuestion();
                 this.lastQ = newQ._id;
                 this.questions.push(newQ);
@@ -304,33 +362,47 @@
 
             },
             makeOrUpdate() {
-                let quizData = this.clearRawForm(this.theQuiz);
-                if (!this.datesSet)
-                    return
+                /*
+                * create a new quiz or update an existing quiz data
+                * */
 
-                this.saving_general_quiz_data = true;
+                // get all quiz fields values
+                let quizData = this.clearRawForm(this.theQuiz);
+
+                // if the dates are not set, don't send any requests
+                // because the dates are mandatory
+                if (!this.datesSet)
+                    return;
+
+                this.loading = true;
+
+                // determine id and endpoint
                 let endpoint;
                 let id;
-                // select endpoint
+
+                // new quiz to be created
                 if (this.quiz_id == null) {
-                    endpoint = ClassServices.createQuiz;
+                    endpoint = QuizService.createQuiz;
                     id = this.class_id;
                 }
+
+                // update
                 else {
-                    endpoint = ClassServices.updateQuiz;
+                    endpoint = QuizService.updateQuiz;
                     id = this.quiz_id;
                 }
 
+                // send the appropriate request
                 endpoint(id, quizData)
                     .then((response) => {
                         this.saveCurrentValues(this.theQuiz);
                         this.quiz_id = response.data.id;
-                        this.saving_general_quiz_data = false;
+                        this.loading = false;
                         this.clearFormErrors(this.theQuiz);
                     })
                     .catch((err) => {
                         this.setErrors(this.theQuiz, err);
-                        this.saving_general_quiz_data = false;
+                        this.loading = false;
                     })
             }
         },
@@ -346,11 +418,17 @@
                 }
             }
         },
+
+
+
         components: {
             MyDatePicker,
             TopInfo,
 
         },
+        mounted() {
+
+        }
     }
 </script>
 
