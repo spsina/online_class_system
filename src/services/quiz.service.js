@@ -7,7 +7,9 @@ export default {
     addQuestion,
     updateDeleteQuestion,
     quizRetrieve,
-    getQuizQuestions
+    getQuizQuestions,
+    startQuiz,
+    submitAnswer
 }
 
 function createQuiz(classId, quizData) {
@@ -49,6 +51,26 @@ function getQuizQuestions(quizId) {
     });
 }
 
+
+function startQuiz(quizId) {
+
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'POST',
+            url: `quiz/${quizId}/start/`,
+        }).then((response) => resolve(response)).catch(err => reject(err))
+    });
+}
+
+function submitAnswer(data) {
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'POST',
+            url: `submit-answer/`,
+            data: data
+        }).then((response) => resolve(response)).catch(err => reject(err))
+    });
+}
 
 function deleteQuiz(quizId) {
     return new Promise((resolve, reject) => {

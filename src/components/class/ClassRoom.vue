@@ -102,7 +102,46 @@
                                     </template>
 
                                 </template>
-                                <template v-slot:item.actions="{  }">
+                                <template v-slot:item.actions="{ item }">
+                                    <v-tooltip top v-if="isTeacher">
+                                        <template v-slot:activator="{on, attr}">
+                                            <v-btn v-bind="attr" v-on="on" icon link
+                                            :to="{ name: 'Quiz-Update', params: {class_id, quiz_id: item.id }}" >
+                                                <v-icon
+                                                class="blue--text">
+                                                    edit
+                                                </v-icon>
+                                            </v-btn>
+                                        </template>
+                                        ویرایش
+                                    </v-tooltip>
+
+                                    <v-tooltip top v-if="isTeacher">
+                                        <template v-slot:activator="{on, attr}">
+                                            <v-btn v-bind="attr" v-on="on" icon link
+                                                   :to="{ name: 'Quiz-Update', params: {class_id, quiz_id: item.id }}" >
+                                                <v-icon
+                                                        class="green--text">
+                                                    mdi-auto-fix
+                                                </v-icon>
+                                            </v-btn>
+                                        </template>
+                                        تصحیح امتحان
+                                    </v-tooltip>
+
+                                    <v-tooltip top v-if="isTeacher && item.is_active">
+                                        <template v-slot:activator="{on, attr}">
+                                            <v-btn v-bind="attr" v-on="on" icon link
+                                                   class="green--text"
+                                                   :to="{ name: 'Quiz-Take', params: {class_id, quiz_id: item.id }}" >
+                                                <v-icon>
+                                                    open_in_browser
+                                                </v-icon>
+                                            </v-btn>
+                                        </template>
+                                        شرکت در آزمون
+                                    </v-tooltip>
+
                                 </template>
                             </v-data-table>
                         </v-card-text>
@@ -256,11 +295,17 @@
                         value: 'questions_count',
                     },
                     {
+                        text: 'عملیات',
+                        align: 'start',
+                        value: 'actions',
+                    },
+                    {
                         text: '',
                         align: 'start',
                         sortable: true,
                         value: 'is_active',
                     },
+
                 ],
                 student_data_headers: [
                     {

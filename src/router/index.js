@@ -6,6 +6,7 @@ import Login from '../components/account/Login'
 import Home from "../views/Home";
 import ClassRoom from '../components/class/ClassRoom'
 import CreateUpdateQuiz from "../components/class/CreateUpdateQuiz";
+import takeQuiz from "../components/class/takeQuiz";
 
 Vue.use(VueRouter)
 
@@ -54,6 +55,14 @@ Vue.use(VueRouter)
           path: 'class/:class_id/quiz/:quiz_id',
           name: 'Quiz-Update',
           component: CreateUpdateQuiz,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: 'class/:class_id/quiz/:quiz_id/take',
+          name: 'Quiz-Take',
+          component: takeQuiz,
           meta: {
             requiresAuth: true
           }
