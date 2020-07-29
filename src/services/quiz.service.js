@@ -6,7 +6,8 @@ export default {
     deleteQuiz,
     addQuestion,
     updateDeleteQuestion,
-    quizRetrieve
+    quizRetrieve,
+    getQuizQuestions
 }
 
 function createQuiz(classId, quizData) {
@@ -34,6 +35,16 @@ function quizRetrieve(quizId){
         axios({
             method: 'GET',
             url: `/quiz/${quizId}/update/`,
+        }).then((response) => resolve(response)).catch(err => reject(err))
+    });
+}
+
+function getQuizQuestions(quizId) {
+
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'GET',
+            url: `quiz/${quizId}/questions/`,
         }).then((response) => resolve(response)).catch(err => reject(err))
     });
 }

@@ -277,9 +277,27 @@
                     this.loading = true;
 
                     QuizService.quizRetrieve(this.quiz_id)
-                        .then((res) => {
-                            console.log(res.data);
-                            this.bindToDate(this.theQuiz, res.data);
+                        .then((quizRaw) => {
+                            this.bindToData(this.theQuiz, quizRaw.data);
+
+                            // load questions
+                            QuizService.getQuizQuestions(this.quiz_id)
+                            .then((QRaw) => {
+                                QRaw.data.forEach((Q) => {
+                                    // get a raw question structure
+                                    let q = this.rawQuestion();
+
+                                    // set db id
+                                    q.id = Q.id;
+
+                                    // bind to data and push to local q array
+                                    this.bindToData(q.fields, Q);
+                                    this.questions.push(q);
+                                });
+                            })
+                            .catch((err) => {
+                                this.$toasted.error(err.response.data.detail);
+                            })
 
                             this.loading = false;
                         })

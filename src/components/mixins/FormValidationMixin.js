@@ -56,11 +56,11 @@ export default  {
                 }
             }
         },
-        bindToDate(rawFormData, data) {
+        bindToData(rawFormData, data) {
             // set form fields according to the given date
             for (let key in rawFormData){
                 if (this.isObject(rawFormData[key].value))
-                    this.bindToDate(rawFormData[key], data[key]);
+                    this.bindToData(rawFormData[key], data[key]);
                 rawFormData[key].value = data[key];
                 rawFormData[key].saved_value = data[key];
             }
