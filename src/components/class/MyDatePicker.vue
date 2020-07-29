@@ -7,9 +7,9 @@
                     <v-btn icon link>
                         <v-icon :id="activatorId">mdi-calendar-range</v-icon>
                     </v-btn>
-                    <template v-if="dateMoment != null">
+                    <template v-if="displayDateMoment != null">
                         <span class="">
-                            {{ dateMoment.format('dddd jDD jMMMM jYYYY ساعت HH:mm') }}
+                            {{ displayDateMoment.format('dddd jDD jMMMM jYYYY ساعت HH:mm') }}
                         </span>
 
                 </template>
@@ -40,6 +40,7 @@
 
 <script>
     import VuePersianDatetimePicker from 'vue-persian-datetime-picker'
+    import moment from 'jalali-moment'
 
     export default {
         components: {
@@ -60,12 +61,23 @@
                 this.$emit('input', this.value_);
             },
         },
-        created() {
-            this.value_ = this.value
+        watch: {
+            value(_value)  {
+
+                this.value_ = _value;
+
+                if (this.value_) {
+                    if (this.value_[this.value_.length - 1] !== 'Z')
+                        this.value_ += 'Z';
+                    this.displayDateMoment = moment(new Date(this.value_));
+                }
+            }
         },
+
         data() {
             return {
                 dateMoment: null,
+                displayDateMoment: null,    // this is tz aware
                 value_: ''
             }
         },

@@ -279,6 +279,8 @@
                     QuizService.quizRetrieve(this.quiz_id)
                         .then((res) => {
                             console.log(res.data);
+                            this.bindToDate(this.theQuiz, res.data);
+
                             this.loading = false;
                         })
                         .catch((err) => {
