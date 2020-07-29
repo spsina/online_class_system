@@ -68,10 +68,10 @@
                                     {{ items.pageStart }} - {{ items.pageStop }} از {{ items.itemsLength }}
                                 </template>
                                 <template v-slot:item.start_datetime="{item}">
-                                    {{ moment(new Date(item.start_datetime)).locale('fa').format('YYYY/MM/DD ساعتhh:mm') }}
+                                    {{ moment(new Date(item.start_datetime)).locale('fa').format('YYYY/MM/DD ساعت HH:mm') }}
                                 </template>
                                 <template v-slot:item.end_datetime="{item}">
-                                    {{ moment(new Date(item.end_datetime)).locale('fa').format('YYYY/MM/DD ساعت hh:mm') }}
+                                    {{ moment(new Date(item.end_datetime)).locale('fa').format('YYYY/MM/DD ساعت HH:mm') }}
                                 </template>
                                 <template v-slot:item.is_active="{item}">
                                     <template v-if="item.is_active">

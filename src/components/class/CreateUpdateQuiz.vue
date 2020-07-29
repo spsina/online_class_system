@@ -1,9 +1,7 @@
 <template>
     <div>
-        <v-app-bar
-                app
-                fixed
-                    class="lighten-4 ma-5 toolbar"
+        <v-toolbar
+                    class="lighten-4 "
                     :class="{
                         'green': !loading && quiz_id != null && !isQuizDataChanged,
                         'red': (quiz_id == null && !loading) || isQuizDataChanged,
@@ -45,8 +43,7 @@
                     انتشار امتحان
                 </v-tooltip>
             </template>
-            </v-app-bar>
-        <div class="spacer"></div>
+            </v-toolbar>
         <v-container v-if="isValid">
 
             <v-row>
