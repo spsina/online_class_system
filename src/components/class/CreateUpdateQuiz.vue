@@ -172,7 +172,6 @@
         name: "AddQuiz.vue",
         data() {
             return {
-                lastQ: null,                // last added question
                 startDateMoment: null,      // quiz start time
                 endDateMoment: null,        // quiz end time
                 quiz_id: null,              // quiz id
@@ -356,7 +355,6 @@
                 // append an empty question structure to the array of questions
 
                 let newQ = this.rawQuestion();
-                this.lastQ = newQ._id;
                 this.questions.push(newQ);
                 this.doScroll = true;
 
@@ -410,16 +408,20 @@
             FormValidationMixin
         ],
         updated() {
+
             if (this.doScroll) {
+                // do scroll is set by addRawQuestion each time a new question is added
+                // automatically scroll to the beginning of newly added question only once
+
+                // set doScroll to false, so the next time an update happens we don't scroll again
                 this.doScroll = false;
+
                 if (this.questions.length > 0) {
                     let _id = this.questions[this.questions.length - 1]._id;
                     document.getElementById(_id + '').scrollIntoView()
                 }
             }
         },
-
-
 
         components: {
             MyDatePicker,
