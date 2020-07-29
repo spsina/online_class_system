@@ -10,6 +10,12 @@
                         'orange': loading
                     }"
             >
+            <template v-if="isUpdatePage && notFound">
+                <v-toolbar-title>
+                    امتحان با کد وارد شده یافت نشد
+                </v-toolbar-title>
+            </template>
+            <template v-else>
                 <v-toolbar-title >
                     {{ theQuiz.quiz_name.value }}
 
@@ -38,9 +44,10 @@
                     </template>
                     انتشار امتحان
                 </v-tooltip>
+            </template>
             </v-app-bar>
         <div class="spacer"></div>
-        <v-container>
+        <v-container v-if="isValid">
 
             <v-row>
                 <v-col cols="12">
@@ -178,6 +185,8 @@
                 doScroll: false,            // if window should scroll to the latest question
                 class_id: null,             //  id of the class, this quiz is being created for
                 loading: false,             // saving/updating/fetching indicator
+                isUpdatePage: false ,       // if this is a quiz update page
+                notFound: false,            // if the given quiz id for update is not found
 
                 // structure of a the quiz form data
                 theQuiz: {
@@ -208,6 +217,10 @@
         },
 
         computed: {
+            isValid() {
+                // page is valid unless this is an update page and notFound is true
+                return !(this.isUpdatePage && this.notFound);
+            },
             datesSet() {
                 // if start date time and end date time of the quiz are set
                 return !!this.theQuiz.start_datetime.value &&
@@ -251,6 +264,7 @@
 
                 if (_quiz_id){
                     this.quiz_id = _quiz_id;
+                    this.isUpdatePage = true;
 
                     /*
                     fetch quiz general info, the fetch quiz questions and
@@ -268,8 +282,10 @@
                             this.loading = false;
                         })
                         .catch((err) => {
-                            this.$toasted.error(err.data);
-                        })
+                            if (err.response.status === 404)
+                                this.notFound = true;
+                            this.loading = false;
+                        });
                 }
             },
             rawQuestion() {
@@ -429,7 +445,9 @@
 
         },
         mounted() {
-
+            // set page as update if quiz_is is present in the url
+            if (this.$route.params['quiz_id'])
+                this.setupAsUpdatePage();
         }
     }
 </script>
