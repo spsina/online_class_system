@@ -9,7 +9,8 @@ export default {
     quizRetrieve,
     getQuizQuestions,
     startQuiz,
-    submitAnswer
+    submitAnswer,
+    TakersList
 }
 
 function createQuiz(classId, quizData) {
@@ -97,6 +98,15 @@ function updateDeleteQuestion(questionId, qData, isDelete) {
             method: (!isDelete) ? 'PUT' : 'DELETE',
             url: `question/${questionId}/`,
             data: qData,
+        }).then((response) => resolve(response)).catch(err => reject(err))
+    });
+}
+
+function TakersList(quizId){
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'GET',
+            url: `quiz/${quizId}/takers/list/`,
         }).then((response) => resolve(response)).catch(err => reject(err))
     });
 }
