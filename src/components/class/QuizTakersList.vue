@@ -79,7 +79,8 @@ export default {
                 showFirstLastPage: true,
                 'items-per-page-text': 'تعداد در در صفحه',
             },
-            quiz_takers_headers: [{
+            quiz_takers_headers: [
+                {
                     text: 'نام',
                     align: 'start',
                     sortable: true,

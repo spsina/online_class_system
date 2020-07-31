@@ -93,6 +93,15 @@ Vue.use(VueRouter)
             requiresAuth: true
           }
         },
+        {
+          path: '/quiz/score/:quiz_answer_id/see/',
+          name: 'Quiz-Score-See',
+          component: ScoreQuiz,
+          props: {editable: false},
+          meta: {
+            requiresAuth: true
+          }
+        },
 
       ]
     }

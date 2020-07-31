@@ -46,13 +46,14 @@
                                 {{ answer.answer }}
                             </span>
                             <v-text-field
+                                    :disabled="!editable"
                                     label="نمره"
                                     block
                                     type="number"
                                     v-model="answer.score"
                             />
                         </v-card-text>
-                        <v-btn block @click="setScore(answer)">
+                        <v-btn block @click="setScore(answer)" v-if="editable">
                             ثبت نمره
                         </v-btn>
                     </v-card>
@@ -69,6 +70,12 @@
 
     export default {
         name: "takeQuiz.vue",
+        props: {
+            editable: {
+                type: Boolean,
+                default: true
+            }
+        },
         components: {
             TopInfo,
         },

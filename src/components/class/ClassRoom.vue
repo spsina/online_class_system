@@ -115,7 +115,16 @@
                                     </template>
                                     شرکت در آزمون
                                 </v-tooltip>
-
+                                <v-tooltip top v-if="tookQuiz(item)">
+                                    <template v-slot:activator="{on, attr}">
+                                        <v-btn v-bind="attr" v-on="on" icon link class="blue--text" :to="{ name: 'Quiz-Score-See', params: {quiz_answer_id: tookQuiz(item).id }}">
+                                            <v-icon>
+                                                mdi-chart-timeline
+                                            </v-icon>
+                                        </v-btn>
+                                    </template>
+                                    مشاهده نمرات
+                                </v-tooltip>
                             </template>
                         </v-data-table>
                     </v-card-text>
@@ -127,7 +136,6 @@
             <v-col cols="12">
                 <v-card>
                     <v-card-title>
-
                         <v-container>
                             <v-row>
                                 دانشجویان
@@ -201,6 +209,7 @@
 import ClassServices from '../../services/class.service'
 import FormValidationMixin from "../mixins/FormValidationMixin";
 import moment from 'jalali-moment'
+import QuizServices from '../../services/quiz.service'
 
 import QuizTakersList from "./QuizTakersList";
 
@@ -220,7 +229,8 @@ export default {
                     errors: []
                 },
             },
-            quiz_data_headers: [{
+            quiz_data_headers: [
+                {
                     text: 'عنوان',
                     align: 'start',
                     sortable: true,
@@ -263,7 +273,8 @@ export default {
                 },
 
             ],
-            student_data_headers: [{
+            student_data_headers: [
+                {
                     text: 'نام',
                     align: 'start',
                     sortable: true,
@@ -289,13 +300,13 @@ export default {
                 },
             ],
 
-            quiz_takers: {},
             class_id: -1,
             loading: true,
             tried: false,
             isDataSet: false,
             theClass: {},
-            dialog: false
+            dialog: false,
+            quiz_takers: {}
         }
     },
     computed: {
@@ -305,6 +316,16 @@ export default {
         }
     },
     methods: {
+        tookQuiz(quiz) {
+            if (quiz.id in this.quiz_takers) {
+                return this.quiz_takers[quiz.id].find( (qa) => {
+                    let qid = qa.user_profile.id;
+                    let myId = this.$store.getters.user.id
+                    return qid === myId;
+                })
+            }
+            return false;
+        },
         moment,
         fire(item) {
             if (confirm("آیا مطمئنید؟")) {
@@ -319,6 +340,7 @@ export default {
                     })
             }
         },
+
         registerNewUser() {
             if (this.newUserRegister.username.value === '')
                 return
@@ -338,7 +360,21 @@ export default {
             this.loading = true;
             ClassServices.classRetrieve(this.class_id)
                 .then((response) => {
+                    // load quiz takers
                     this.theClass = response.data;
+
+                    if (this.isTeacher) {
+                        this.theClass.quizzes.forEach( (quiz) => {
+                            QuizServices.TakersList(quiz.id)
+                                .then((res) => {
+                                    this.$set(this.quiz_takers, quiz.id, res.data);
+                                })
+                                .catch(() => {
+                                    this.$toasted.error("اطلاعات به طور کامل دریافت نشد")
+                                })
+                        });
+                    }
+
                     this.loading = false;
                     this.isDataSet = true;
                 })
