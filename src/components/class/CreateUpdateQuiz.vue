@@ -36,11 +36,11 @@
                 <v-spacer></v-spacer>
                 <v-tooltip bottom>
                     <template v-slot:activator="{on, attr}">
-                        <v-btn icon link v-bind="attr" v-on="on">
+                        <v-btn icon link v-bind="attr" v-on="on" :to="{ name: 'Class-Page', params: {'class_id': class_id}}">
                             <v-icon class="green--text">publish</v-icon>
                         </v-btn>
                     </template>
-                    انتشار امتحان
+                    ذخیره
                 </v-tooltip>
             </template>
             </v-toolbar>

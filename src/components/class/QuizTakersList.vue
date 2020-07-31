@@ -1,5 +1,5 @@
 <template>
-<v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+<v-dialog v-model="dialog" @input="$emit('input', !dialog)" fullscreen hide-overlay transition="dialog-bottom-transition">
     <template v-slot:activator="dActivator">
         <v-tooltip top v-if="isTeacher" v-bind="dActivator.attr" v-on="dActivator.on">
             <template v-slot:activator="{on, attr}">
@@ -55,9 +55,9 @@ export default {
     props: [
         'quiz_id',
         'isTeacher',
-        'dialog',
     ],
-    methods: {
+
+    created() {
     },
     mounted() {
         // get class quiz data
@@ -71,6 +71,7 @@ export default {
     },
     data() {
         return {
+            dialog: false,
             quiz_takers: [],
             header_props: {
                 'sort-by-text': 'مرتب سازی بر اساس',
