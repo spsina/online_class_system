@@ -7,6 +7,7 @@ import Home from "../views/Home";
 import ClassRoom from '../components/class/ClassRoom'
 import CreateUpdateQuiz from "../components/class/CreateUpdateQuiz";
 import takeQuiz from "../components/class/takeQuiz";
+import ScoreQuiz from "../components/class/ScoreQuiz";
 
 Vue.use(VueRouter)
 
@@ -80,6 +81,14 @@ Vue.use(VueRouter)
           path: '/class/:class_id/',
           name: 'Class-Page',
           component: ClassRoom,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/quiz/score/:quiz_answer_id/',
+          name: 'Quiz-Score',
+          component: ScoreQuiz,
           meta: {
             requiresAuth: true
           }

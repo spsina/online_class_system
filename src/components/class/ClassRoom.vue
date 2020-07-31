@@ -105,7 +105,7 @@
                                 </v-tooltip>
                                 <QuizTakersList :dialog="dialog" :is-teacher="isTeacher" :quiz_id="item.id" />
 
-                                <v-tooltip top v-if="isTeacher && item.is_active">
+                                <v-tooltip top v-if="!isTeacher && item.is_active">
                                     <template v-slot:activator="{on, attr}">
                                         <v-btn v-bind="attr" v-on="on" icon link class="green--text" :to="{ name: 'Quiz-Take', params: {class_id, quiz_id: item.id }}">
                                             <v-icon>

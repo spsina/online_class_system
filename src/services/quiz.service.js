@@ -10,7 +10,9 @@ export default {
     getQuizQuestions,
     startQuiz,
     submitAnswer,
-    TakersList
+    TakersList,
+    QuizAnswerRetrieve,
+    setScore
 }
 
 function createQuiz(classId, quizData) {
@@ -107,6 +109,25 @@ function TakersList(quizId){
         axios({
             method: 'GET',
             url: `quiz/${quizId}/takers/list/`,
+        }).then((response) => resolve(response)).catch(err => reject(err))
+    });
+}
+
+function QuizAnswerRetrieve(quizAnswerId) {
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'GET',
+            url: `quiz-answer/${quizAnswerId}/`,
+        }).then((response) => resolve(response)).catch(err => reject(err))
+    });
+}
+
+function setScore(answerId, data) {
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'PUT',
+            url: `answer/${answerId}/set-score/`,
+            data: data
         }).then((response) => resolve(response)).catch(err => reject(err))
     });
 }

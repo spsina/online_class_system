@@ -28,7 +28,9 @@
                             <v-tooltip top>
                                 <template v-slot:activator="{on, attrs}">
                                     <span v-bind="attrs" v-on="on">
-                                        <v-icon @click="fire(item)" class="blue--text">mdi-pencil</v-icon>
+                                        <v-btn link icon :to="{name: 'Quiz-Score', params: {'quiz_answer_id': item.id}}">
+                                            <v-icon class="blue--text">mdi-pencil</v-icon>
+                                        </v-btn>
                                     </span>
                                 </template>
                                 <span>
@@ -55,6 +57,8 @@ export default {
         'isTeacher',
         'dialog',
     ],
+    methods: {
+    },
     mounted() {
         // get class quiz data
 
