@@ -78,11 +78,7 @@ export default {
             this.loading = true;
             ClassServices.classRetrieve(this.class_id)
                 .then((response) => {
-
                     this.theClass = response.data;
-
-                    console.log(response.data);
-
                     this.loading = false;
                     this.isDataSet = true;
                 })
