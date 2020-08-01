@@ -4,10 +4,10 @@ import ListClass from '../components/class/ListClass.vue'
 import AddClass from "../components/class/AddClass";
 import Login from '../components/account/Login'
 import Home from "../views/Home";
-import ClassRoom from '../components/class/ClassRoom'
-import CreateUpdateQuiz from "../components/class/CreateUpdateQuiz";
-import takeQuiz from "../components/class/takeQuiz";
-import ScoreQuiz from "../components/class/ScoreQuiz";
+import ClassRoom from '../views/ClassRoom'
+import CreateUpdateQuiz from "../components/quiz/CreateUpdateQuiz";
+import takeQuiz from "../views/takeQuiz";
+import ScoreQuiz from "../views/ScoreQuiz";
 
 Vue.use(VueRouter)
 

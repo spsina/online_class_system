@@ -167,8 +167,8 @@
 </template>
 
 <script>
-    import TopInfo from "./TopInfo";
-    import MyDatePicker from "./MyDatePicker";
+    import TopInfo from "../general/TopInfo";
+    import MyDatePicker from "../general/MyDatePicker";
     import FormValidationMixin from "../mixins/FormValidationMixin";
     import QuizService from '../../services/quiz.service'
 

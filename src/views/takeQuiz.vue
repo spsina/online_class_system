@@ -77,10 +77,10 @@
 </template>
 
 <script>
-    import TopInfo from "./TopInfo";
+    import TopInfo from "../components/general/TopInfo";
     import moment from 'jalali-moment'
-    import QuizService from "../../services/quiz.service";
-    import FormValidationMixin from "../mixins/FormValidationMixin";
+    import QuizService from "../services/quiz.service";
+    import FormValidationMixin from "../components/mixins/FormValidationMixin";
 
     export default {
         name: "takeQuiz.vue",

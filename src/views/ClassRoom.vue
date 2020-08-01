@@ -47,10 +47,10 @@
 </template>
 
 <script>
-import ClassServices from '../../services/class.service'
-import FormValidationMixin from "../mixins/FormValidationMixin";
-import QuizList from "./QuizList";
-import StudentsList from "./StudentsList";
+import ClassServices from '../services/class.service'
+import FormValidationMixin from "../components/mixins/FormValidationMixin";
+import QuizList from "../components/quiz/QuizList";
+import StudentsList from "../components/class/StudentsList";
 
 export default {
     mixins: [FormValidationMixin, ],

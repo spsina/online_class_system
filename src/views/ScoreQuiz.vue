@@ -64,9 +64,9 @@
 </template>
 
 <script>
-    import TopInfo from "./TopInfo";
-    import QuizService from "../../services/quiz.service";
-    import FormValidationMixin from "../mixins/FormValidationMixin";
+    import TopInfo from "../components/general/TopInfo";
+    import QuizService from "../services/quiz.service";
+    import FormValidationMixin from "../components/mixins/FormValidationMixin";
 
     export default {
         name: "takeQuiz.vue",
